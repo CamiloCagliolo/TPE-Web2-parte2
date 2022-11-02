@@ -45,10 +45,10 @@ function main() {
 
     filterBtn.addEventListener('click', () => {
         if (radioStar.checked) {
-            loadFilteredTable('star');
+            loadFilteredTable('exoplanets','star');
         }
         else if (radioMethod.checked) {
-            loadFilteredTable('method');
+            loadFilteredTable('exoplanets','method');
         }
     });
 
@@ -66,10 +66,9 @@ function main() {
         }
     }
 
-    async function loadFilteredTable(filterBy) {
+    async function loadFilteredTable(type, filterBy) {
         try {
-            console.log(`filter/${filterBy}/${selectContainer.firstElementChild.value}`);
-            stringQuery = url.replace("tables", `filter/${filterBy}/${selectContainer.firstElementChild.value}`);
+            stringQuery = url.replace('tables',`${type}/${filterBy}`);
             let response = await fetch(stringQuery);
             let content = await response.text();
             tableDiv.innerHTML = content;
@@ -200,14 +199,14 @@ function main() {
     //--------------------------------------Extra methods for rendering----------------------------------
     async function getSelect(type) {
         try {
-            stringQuery = url.replace("tables", "select/" + type);
+            stringQuery = url.replace("tables", `select/${type}${type === 'methods'?"/short":""}`);
             let response = await fetch(stringQuery);
             let content = await response.text();
             return content;
         }
         catch (Exc) {
             console.log(Exc);
-            messageDiv.innerHTML = '<span class="alert alert-warning">There was an error when communicating with the server</span>';
+            messageDiv.innerHTML = '<div class="alert alert-warning">There was an error when communicating with the server</div>';
             return null;
         }
     }

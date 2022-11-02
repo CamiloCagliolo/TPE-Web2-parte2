@@ -12,18 +12,16 @@ class ExoplanetModel extends Model{
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function insertExoplanet($data){
+    public function insertExoplanet($exoplanet){
         try {
-            $id_method = $this->getIdMethodByName($data->methodOrDistance);
-            $id_star = $this->getIdStarByName($data->starOrType);
-
-            $newExoplanet = [$data->id, $data->name, $data->radius, $data->mass, $id_method, $id_star];
+            $exoplanet[3] = $this->getIdMethodByName($exoplanet[3]);
+            $exoplanet[4] = $this->getIdStarByName($exoplanet[4]);
 
             $str_query = "INSERT INTO exoplanets (id, name, mass, radius, id_method, id_star) VALUES (NULL, ?, ?, ?, ?, ?)";
             $query = $this->db->prepare($str_query);
-            $query->execute($newExoplanet);
-
+            $query->execute($exoplanet);
             return true;
+            
         } catch (Exception) {
             return false;
         }

@@ -29,9 +29,19 @@ class NavView extends ParentView{
         $this->smarty->display('./templates/tables_page.tpl');
     }
 
-    public function renderSelect($data, $short){
+    public function showAdd(){
+        $this->smarty->assign('title', "Add items");
+        $this->smarty->display('./templates/addItems.tpl');
+    }
+
+    public function renderMethodSelect($data, $isShort){
         $this->smarty->assign('methods', $data);
-        $this->smarty->assign('short', $short);
+        $this->smarty->assign('short', $isShort);
         $this->smarty->display('./templates/selectMethods.tpl');
+    }
+
+    public function renderStarSelect($data){
+        $this->smarty->assign('stars', $data);
+        $this->smarty->display('./templates/selectStars.tpl');
     }
 }

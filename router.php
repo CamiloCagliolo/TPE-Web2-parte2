@@ -25,14 +25,19 @@ $router->addRoute("tables", "GET", "NavController", "sectionTables");
 $router->addRoute("exoplanets", "GET", "ExoplanetController", "buildTable");
 $router->addRoute("stars", "GET", "StarController", "buildTable");
 
-$router->addRoute("select/stars", "GET", "StarController", "buildSelect");
-$router->addRoute("select/methods", "GET", "NavController", "buildShortSelect");
+$router->addRoute("select/stars", "GET", "NavController", "buildStarSelect");
+$router->addRoute("select/methods/short", "GET", "NavController", "buildMethodSelect");
+$router->addRoute("select/methods/long", "GET", "NavController", "buildMethodSelect");
 
 $router->addRoute("tables/exoplanets", "PUT", "ExoplanetController", "replaceExoplanet");
 $router->addRoute("tables/exoplanets/:ID", "DELETE", "ExoplanetController", "deleteExoplanet");
 
 $router->addRoute("tables/stars", "PUT", "StarController", "replaceStar");
 $router->addRoute("tables/stars/:ID", "DELETE", "StarController", "deleteStar");
+
+$router->addRoute("add", "GET", "NavController", "sectionAdd");
+$router->addRoute("add/exoplanets", "POST", "ExoplanetController", "addExoplanet");
+$router->addRoute("add/stars", "POST", "StarController", "addStar");
 
 $router->setDefaultRoute("MessageController", "errorPage");
 

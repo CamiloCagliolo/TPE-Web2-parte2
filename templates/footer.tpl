@@ -2,7 +2,7 @@
 {if $title eq "Exoplanets: tables"}
     <script src="js/loadTable.js"></script>
 {/if}
-{if $title eq "Exoplanets: edit"}
+{if $title eq "Add items"}
     <script src="js/addItems.js"></script>
 {/if}
 {if $title eq "Log in" || $title eq "Register"}

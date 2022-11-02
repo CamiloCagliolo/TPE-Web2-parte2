@@ -47,4 +47,21 @@ class ExoplanetController extends Controller{
         }
     }
 
+    public function addExoplanet(){
+        if($this->session){
+            $exo = $this->data;
+            $exoplanet = [$exo->name, $exo->mass, $exo->radius,$exo->method, $exo->star];
+            $success = $this->model->insertExoplanet($exoplanet);
+            if($success){
+                (new MessageController())->HTTPMessage(200, 'Exoplanet addition successful.');
+            }
+            else{
+                (new MessageController())->HTTPMessage(400, 'Addition failed. Try again.');
+            }
+        }
+        else{
+            (new MessageController())->HTTPMessage(403, "You don't have enough permissions.");
+        }
+    }
+
 }

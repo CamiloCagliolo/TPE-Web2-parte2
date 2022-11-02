@@ -8,8 +8,5 @@ class StarView extends ParentView{
         $this->smarty->display('./templates/tables.tpl');
     }
 
-    public function renderSelect($data){
-        $this->smarty->assign('stars', $data);
-        $this->smarty->display('./templates/selectStars.tpl');
-    }
+    
 }

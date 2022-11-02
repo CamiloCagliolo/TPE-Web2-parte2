@@ -9,12 +9,11 @@ class StarModel extends Model{
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function insertNewStar($data){
+    public function insertStar($star){
         try {
-            $newStar = [$data->name, $data->mass, $data->methodOrDistance, $data->starOrType];
             $str_query = "INSERT INTO stars (id, name, mass, radius, distance, type) VALUES (NULL, ?, ?, ?, ?, ?)";
             $query = $this->db->prepare($str_query);
-            $query->execute($newStar);
+            $query->execute($star);
             return true;
         } catch (Exception $ex) {
             return false;

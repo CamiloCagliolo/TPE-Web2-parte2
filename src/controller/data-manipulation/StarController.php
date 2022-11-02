@@ -14,11 +14,6 @@ class StarController extends Controller{
         $this->data = json_decode(file_get_contents("php://input"));
     }
 
-    public function buildSelect(){
-        $data = $this->model->getAllData();
-        $this->view->renderSelect($data);
-    }
-
     public function replaceStar(){
         if($this->session){
             $success = $this->model->updateStar($this->data);
@@ -44,6 +39,23 @@ class StarController extends Controller{
             }
             else{
                 (new MessageController())->HTTPMessage(400, 'Deletion failed. Try again.');
+            }
+        }
+        else{
+            (new MessageController())->HTTPMessage(403, "You don't have enough permissions.");
+        }
+    }
+
+    public function addStar(){
+        if($this->session){
+            $star = $this->data;
+            $star = [$star->name, $star->mass, $star->radius,$star->distance, $star->type];
+            $success = $this->model->insertStar($star);
+            if($success){
+                (new MessageController())->HTTPMessage(200, 'Star addition successful.');
+            }
+            else{
+                (new MessageController())->HTTPMessage(400, 'Addition failed. Try again.');
             }
         }
         else{

@@ -47,13 +47,21 @@ class NavController{
         $this->view->showTables();
     }
 
-    public function buildShortSelect(){
-        $data = $this->model->getMethods();
-        $this->view->renderSelect($data, true);
+    public function sectionAdd(){
+        $this->view->showAdd();
     }
 
-    public function buildLongSelect(){
+    public function buildMethodSelect(){
+        $actions = explode('/', $_GET['action']);
+        $isShort = (array_pop($actions) == 'short');
         $data = $this->model->getMethods();
-        $this->view->renderSelect($data, false);
+        $this->view->renderMethodSelect($data, $isShort);
     }
+
+    public function buildStarSelect(){
+        $data = (new StarModel())->getAllData();
+        $this->view->renderStarSelect($data);
+    }
+
+    
 }
