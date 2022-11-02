@@ -1,0 +1,251 @@
+body {
+    background-image: url("../img/background.jpg");
+    color: azure;
+    font-size: 1rem;
+    text-align: justify;
+}
+
+h3{
+    text-align: center;
+}
+
+.navbar-brand, .nav-link{
+    color:azure;
+}
+
+.navbar-toggler{
+    background-color: aliceblue;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.main-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: rgba(37, 33, 28, 0.498);
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    padding: 4%;
+}
+
+.main-text h1 {
+    text-align: center;
+}
+
+.main-text span, .terms {
+    font-style: italic;
+}
+
+.footer {
+    margin-top: 15%;
+    text-align: center;
+}
+
+.question{
+    margin: 5%;
+}
+
+.div-btns{
+    display:flex;
+    justify-content: space-around;
+    margin-bottom: 10%;
+}
+
+.div-btns input{
+    margin-left:25%;
+    margin-right:25%;
+}
+
+.tables-container{
+    width: 100%;
+}
+
+.table {
+    background-color: rgba(47, 54, 34, 0.735);
+    color: azure;
+    border: 2px rgb(54, 36, 34);
+    margin-right: 5%;
+}
+
+.table input{
+    max-width: fit-content;
+}
+
+.alert{
+    text-align:center;
+    margin: 2%;
+    opacity: 0.85;
+}
+
+.alert p{
+    margin: 0 !important;
+}
+
+.options{
+    display:flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0;
+}
+
+.filter{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 350px;
+    background-color: rgba(128, 38, 38, 0.504);
+    padding: 3rem;
+}
+
+.filter span{
+    max-width: fit-content;
+    margin-bottom: 0.5rem;
+}
+
+.filter select{
+    width: fit-content;
+}
+
+.exoplanet-form, .star-form, .user-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: rgba(53, 60, 42, 0.705);
+}
+
+.exoplanet-form{
+    padding:5%;
+    width: 80%;
+}
+
+.star-form{
+    padding: 9.2%;
+    width: 145%;
+    margin-bottom: 4%;
+}
+
+.user-form{
+    margin-top:5%;
+    align-items: center;
+    padding: 1rem;
+}
+
+.user-form div{
+    width: 80%;
+}
+
+.user-form input[type=submit]{
+    max-width: fit-content;
+}
+
+form div{
+    margin: 3%;
+}
+
+form input[type="button"]{
+    margin-top: 4%;
+}
+
+.submit{
+    display:flex;
+    justify-content: center;
+}
+
+.go-back{
+    margin-top: 5%;
+}
+
+.hidden {
+    display: none;
+}
+
+.hidden-block{
+    visibility: hidden;
+}
+
+.terms{
+    width: 80%;
+    max-width: 600px;
+    padding:3rem;
+    margin-top: 5%;
+    background-color: rgba(180, 106, 82, 0.577);
+}
+
+.terms a{
+    color:rgb(195, 134, 161);
+}
+
+@media only screen and (min-width: 1500px) {
+
+    body {
+        font-size: large;
+    }
+
+    .footer {
+        left: 45%;
+    }
+
+    .question{
+        margin: 1%;
+    }
+    
+    .div-btns{
+        margin-bottom: 1%;
+    }
+
+    .tables-container{
+        width: 50%;
+    }
+
+    .options{
+        margin:1%;
+        width: 30%;
+    }
+
+    .filter{
+        flex-direction: row;
+        width: 40%;
+        max-width: none;
+        background-color: rgba(128, 38, 38, 0.504);
+        padding: 1rem;
+    }
+    
+    .filter span{
+        max-width: fit-content;
+        margin-left: 0.5rem;
+        margin-bottom: 0;
+    }
+    
+    .filter select{
+        width: fit-content;
+    }
+
+    .exoplanet-form{
+        padding:10%;
+        width: 25em;
+    }
+    
+    .star-form{
+        padding: 10%;
+        width: 25em;
+        margin-bottom: 4%;
+    }
+    
+    form div{
+        margin: 1%;
+    }
+    
+    form input[type="button"]{
+        margin-top: 1%;
+        max-width: fit-content;
+    }
+
+}
