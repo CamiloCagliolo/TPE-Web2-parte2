@@ -3,12 +3,41 @@ require_once "src/model/Model.php";
 
 class ExoplanetModel extends Model{
 
-    public function getAllData(){
-        $query = $this->db->prepare('SELECT e.id, e.name, e.mass, e.radius, m.name_acronym as method, s.name as star 
-                                    FROM exoplanets e 
-                                    INNER JOIN methods m ON e.id_method = m.id 
-                                    INNER JOIN stars s ON e.id_star = s.id
-                                    ORDER BY e.name ASC');
+    public function getAllData($sort = 'name', $order = 'ASC'){
+        $str_query = 'SELECT e.id, e.name, e.mass, e.radius, m.name_acronym as method, s.name as star 
+        FROM exoplanets e 
+        INNER JOIN methods m ON e.id_method = m.id 
+        INNER JOIN stars s ON e.id_star = s.id
+        ORDER BY ';
+
+        switch($sort){
+            case 'name':
+                $str_query .= 'e.name ';
+                break;
+            case 'mass':
+                $str_query .= 'e.mass ';
+                break;
+            case 'radius':
+                $str_query .= 'e.radius ';
+                break;
+            case 'method':
+                $str_query .= 'm.name_acronym ';
+                break;
+            case 'star':
+                $str_query .= 's.name ';
+                break;
+            default:
+                return null;
+        }
+
+        if(strtoupper($order) == 'ASC' || strtoupper($order) == 'DESC'){
+            $str_query .= $order;
+        }
+        else{
+            return null;
+        }
+
+        $query = $this->db->prepare($str_query);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
     }

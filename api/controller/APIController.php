@@ -12,7 +12,16 @@ class APIController{
     }
 
     public function getAll(){
-        $data = $this->model->getAllData();
+        if(isset($_GET['sort']) && isset($_GET['order'])){
+            $data = $this->model->getAllData($_GET['sort'], $_GET['order']);
+        }
+        else if(isset($_GET['sort'])){
+            $data = $this->model->getAllData($_GET['sort']);
+        }
+        else{
+            $data = $this->model->getAllData();
+        }
+        
         if($data != null){
             $this->view->showData($data);
         }

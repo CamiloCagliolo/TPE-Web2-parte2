@@ -18,5 +18,6 @@ $router->addRoute("star/:ID", "PUT", "APIStarController", "replace");
 $router->addRoute("star/:ID", "DELETE", "APIStarController", "deleteEntity");
 
 $router->setDefaultRoute("APIController", "returnError");
+
 $router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);
 
