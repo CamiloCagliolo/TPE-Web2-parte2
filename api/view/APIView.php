@@ -1,26 +1,17 @@
 <?php
-require_once "ParentView.php";
 
-class MessageView extends ParentView{
+class APIView{
 
-    public function __construct($error = null){
-        parent::__construct();
-        $this->smarty->assign("error", $error);
-    }
-
-    public function showError(){
-        $this->smarty->assign('title', 'Error');
-        $this->smarty->display("./templates/error.tpl");
-    }
-
-    public function returnHTTPMessage($code = 404, $message = null){
+    public function showData($data, $code = 200){
         header("HTTP/1.1 " . $code . " " . $this->_requestStatus($code));
-
-        if ($message != null){
-            echo $message;
-        }  
+        echo json_encode($data);
     }
 
+    public function showMessage($message, $code = 200){
+        header("HTTP/1.1 " . $code . " " . $this->_requestStatus($code));
+        echo $message;
+    }
+    
     private function _requestStatus($code){
         $status = array(
           200 => "OK",

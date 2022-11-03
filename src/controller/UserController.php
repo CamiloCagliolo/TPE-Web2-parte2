@@ -5,10 +5,12 @@ require_once "MessageController.php";
 class UserController{
     private $model;
     private $data;
+    private $session;
 
     public function __construct(){
         $this->model = new UserModel();
         $this->data = json_decode(file_get_contents("php://input"));
+        $this->session = isset($_SESSION['username']);
     }
 
     public function checkLogIn(){
@@ -28,7 +30,7 @@ class UserController{
     }
 
     public function addUser(){
-        if($this->data != null){
+        if(($this->data != null) && (!$this->session)){
             $hash = password_hash($this->data->password, PASSWORD_ARGON2ID);
             $success = $this->model->insertNewUser($this->data->username, $hash);
 
@@ -39,6 +41,9 @@ class UserController{
                 (new MessageController())->HTTPMessage(409, 'Error. Username is already in use.');
             }
         }
+        else if($this->session){
+            (new MessageController('cantregister'))->errorPage();
+        }
         else{
             (new MessageController())->HTTPMessage(400);
         }
@@ -46,7 +51,13 @@ class UserController{
     }
 
     public function logOut(){
-        session_destroy();
-        header('Location: home');
+        if($this->session){
+            session_destroy();
+            header('Location: home');
+        }
+        else{
+            (new MessageController('notlogged'))->errorPage();
+        }
+        
     }
 }

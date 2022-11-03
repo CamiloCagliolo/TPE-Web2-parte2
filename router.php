@@ -11,34 +11,36 @@ define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'
 
 $router = new Router();
 
-$router->addRoute("home", "GET", "NavController", "sectionHome");
+$router->addRoute("home", "GET", "NavController", "sectionHome"); //HOME
 
-$router->addRoute("login", "GET", "NavController", "sectionLogin");
+$router->addRoute("login", "GET", "NavController", "sectionLogin"); //TODO LO RELACIONADO AL LOGIN/LOGOUT
 $router->addRoute("login", "POST", "UserController", "checkLogIn");
 $router->addRoute("logout", "GET", "UserController", "logOut");
 
-$router->addRoute("register", "GET", "NavController", "sectionRegister");
+$router->addRoute("register", "GET", "NavController", "sectionRegister"); //TODO LO RELACIONADO AL REGISTRO
 $router->addRoute("register", "POST", "UserController", "addUser");
 $router->addRoute("terms", "GET", "NavController", "sectionTerms");
 
-$router->addRoute("tables", "GET", "NavController", "sectionTables");
+$router->addRoute("tables", "GET", "NavController", "sectionTables"); //PANTALLA DE TABLAS Y TABLAS EN SÍ
 $router->addRoute("exoplanets", "GET", "ExoplanetController", "buildTable");
 $router->addRoute("stars", "GET", "StarController", "buildTable");
 
-$router->addRoute("select/stars", "GET", "NavController", "buildStarSelect");
-$router->addRoute("select/methods/short", "GET", "NavController", "buildMethodSelect");
+$router->addRoute("select/stars", "GET", "NavController", "buildStarSelect"); //RUTAS PARA ACCEDER A LA CONSTRUCCIÓN DE  
+$router->addRoute("select/methods/short", "GET", "NavController", "buildMethodSelect"); //SELECTS DINÁMICOS
 $router->addRoute("select/methods/long", "GET", "NavController", "buildMethodSelect");
 
-$router->addRoute("tables/exoplanets", "PUT", "ExoplanetController", "replaceExoplanet");
-$router->addRoute("tables/exoplanets/:ID", "DELETE", "ExoplanetController", "deleteExoplanet");
+//-----RUTAS PARA LOS BOTONES DE EDITAR Y BORRAR DE LAS TABLAS, TANTO EXOPLANETAS COMO ESTRELLAS-----------
+$router->addRoute("tables/exoplanets", "PUT", "ExoplanetController", "replace"); 
+$router->addRoute("tables/exoplanets/:ID", "DELETE", "ExoplanetController", "delete");
 
-$router->addRoute("tables/stars", "PUT", "StarController", "replaceStar");
-$router->addRoute("tables/stars/:ID", "DELETE", "StarController", "deleteStar");
+$router->addRoute("tables/stars", "PUT", "StarController", "replace");
+$router->addRoute("tables/stars/:ID", "DELETE", "StarController", "delete");
+//---------------------------------------------------------------------------------------------------------
 
-$router->addRoute("add", "GET", "NavController", "sectionAdd");
+$router->addRoute("add", "GET", "NavController", "sectionAdd"); //RUTAS PARA AÑADIR ITEMS A LAS LISTAS
 $router->addRoute("add/exoplanets", "POST", "ExoplanetController", "addExoplanet");
 $router->addRoute("add/stars", "POST", "StarController", "addStar");
 
-$router->setDefaultRoute("MessageController", "errorPage");
+$router->setDefaultRoute("MessageController", "errorPage"); //DEFAULT: ERROR 404
 
 $router->route($_GET['action'], $_SERVER['REQUEST_METHOD']);

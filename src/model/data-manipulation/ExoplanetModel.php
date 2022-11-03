@@ -12,7 +12,7 @@ class ExoplanetModel extends Model{
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function insertExoplanet($exoplanet){
+    public function insert($exoplanet){
         try {
             $exoplanet[3] = $this->getIdMethodByName($exoplanet[3]);
             $exoplanet[4] = $this->getIdStarByName($exoplanet[4]);
@@ -27,7 +27,7 @@ class ExoplanetModel extends Model{
         }
     }
 
-    public function updateExoplanet($data){
+    public function update($data){
 
         $idMethod = $this->getIdMethodByName($data->methodOrDistance);
         $idStar = $this->getIdStarByName($data->starOrType);
@@ -46,16 +46,18 @@ class ExoplanetModel extends Model{
         }
     }
 
-    public function deleteExoplanet($id)
-    {
-        try {
-            $str_query = "DELETE FROM exoplanets WHERE id = ?";
-            $query = $this->db->prepare($str_query);
-            $query->execute([$id]);
-            return true;
-        } catch (Exception) {
-            return false;
-        }
+    public function delete($id){
+        $params = ['table'=>'exoplanets', 'id'=>$id];
+        return parent::delete($params);
+    }
+
+    public function getDataById($id){
+        $query = $this->db->prepare('SELECT e.*, m.name_acronym, s.name as star_name FROM exoplanets e 
+                                    INNER JOIN methods m ON e.id_method = m.id 
+                                    INNER JOIN stars s ON e.id_star = s.id
+                                    WHERE id = ?');
+        $query->execute([$id]);
+        return $query->fetch(PDO::FETCH_OBJ);
     }
     
     private function getIdMethodByName($name)

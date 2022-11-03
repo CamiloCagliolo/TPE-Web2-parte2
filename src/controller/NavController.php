@@ -48,7 +48,13 @@ class NavController{
     }
 
     public function sectionAdd(){
-        $this->view->showAdd();
+        if($this->session){
+            $this->view->showAdd();
+        }
+        else{
+            (new MessageController("permission"))->errorPage();
+        }
+        
     }
 
     public function buildMethodSelect(){

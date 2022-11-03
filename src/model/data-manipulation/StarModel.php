@@ -9,7 +9,7 @@ class StarModel extends Model{
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function insertStar($star){
+    public function insert($star){
         try {
             $str_query = "INSERT INTO stars (id, name, mass, radius, distance, type) VALUES (NULL, ?, ?, ?, ?, ?)";
             $query = $this->db->prepare($str_query);
@@ -20,7 +20,7 @@ class StarModel extends Model{
         }
     }
 
-    public function updateStar($data){
+    public function update($data){
 
         $str_query = "UPDATE stars SET name = ?, mass = ?, radius = ?, 
         distance = ?, type = ? WHERE id = ?";
@@ -36,14 +36,14 @@ class StarModel extends Model{
         }
     }
 
-    public function deleteStar($id){
-        try {
-            $str_query = "DELETE FROM stars WHERE id = ?";
-            $query = $this->db->prepare($str_query);
-            $query->execute([$id]);
-            return true;
-        } catch (Exception) {
-            return false;
-        }
+    public function delete($id){
+        $params = ['table'=>'stars', 'id'=>$id];
+        return parent::delete($params);
+    }
+
+    public function getDataById($id){
+        $query = $this->db->prepare('SELECT * FROM stars WHERE id = ?');
+        $query->execute([$id]);
+        return $query->fetch(PDO::FETCH_OBJ);
     }
 }

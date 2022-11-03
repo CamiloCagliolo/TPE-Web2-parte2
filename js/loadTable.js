@@ -194,6 +194,7 @@ function main() {
         let content = await response.text();
         messageDiv.innerHTML = content;
         messageDiv.classList.add(response.ok?'alert-success':'alert-warning');
+        messageDiv.classList.remove(response.ok?'alert-warning':'alert-success');
     }
 
     //--------------------------------------Extra methods for rendering----------------------------------
