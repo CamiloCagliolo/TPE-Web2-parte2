@@ -68,16 +68,21 @@ Para hacer una request DELETE, la URI será .../api/exoplanet/:ID o .../api/star
 
 
 --------------------------------------NOTAS EXTRA PARA EL PROFESOR INTERESADO-------------------------------------------
+
 En esta segunda versión del trabajo, además de cumplir con la consigna, traté de recuperar aquello que hice en la primera entrega. Sé que la consigna no incluía necesariamente reutilizar o rehacer lo anterior, pero dado que el anterior trabajo (https://github.com/CamiloCagliolo/TPE-Web-2) estaba muy mal hecho (me saqué un 4), decidí redimirme e intentar demostrar que la devolución no fue en vano, así que hice un refactoreo de todo el código (fue empezar de casi cero).
 
 --------------------------------------------Explicación del trabajo:
+
 ----------Sobre las tablas: 
+
 La base de datos tiene CUATRO TABLAS: exoplanets, stars, methods y users. Exoplanets es la tabla principal, que tiene dos foreign keys, que representan la id de una star y la id de un method. Users guarda usuarios y contraseñas hasheadas mediante Argon2ID.
 
 ----------Sobre la página:
+
 En total hay CUATRO MVC. Cada una de las tablas es operada por un Model y tiene su propio Controller y View, SALVO el model para la tabla methods que es operado por el NavController. NavController es el controller que se encarga únicamente de la navegación por la página y hace uso de ese model en particular porque lo necesita para renderizar cierto contenido, pero nada más: el contenido de methods no es editable de ninguna forma. MessageHelper es simplemente un ayudante que se invoca en los controllers para manejar las páginas de error (por ejemplo, al querer entrar a páginas restringidas o que no existen) y mensajes HTTP para que JavaScript los renderice en la página.
 
 ----------Explicación de la estructura de los archivos: 
+
 En la carpeta "src" se encuentran todos los Models, Views, Controllers y Helpers que corresponden a la página web. 
 ParentView es una clase padre para todas las otras Views y el Helper. 
 Model es una clase padre para todos los otros Models. 
