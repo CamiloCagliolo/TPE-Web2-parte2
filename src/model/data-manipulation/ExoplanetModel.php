@@ -30,8 +30,8 @@ class ExoplanetModel extends Model{
 
     public function update($data){
 
-        $idMethod = $this->getIdMethodByName($data->methodOrDistance);
-        $idStar = $this->getIdStarByName($data->starOrType);
+        $idMethod = $this->getIdMethodByName($data->method);
+        $idStar = $this->getIdStarByName($data->star);
 
         $str_query = "UPDATE exoplanets SET name = ?, mass = ?, radius = ?, 
         id_method = ?, id_star = ? WHERE id = ?";

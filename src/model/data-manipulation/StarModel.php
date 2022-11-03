@@ -25,7 +25,7 @@ class StarModel extends Model{
         $str_query = "UPDATE stars SET name = ?, mass = ?, radius = ?, 
         distance = ?, type = ? WHERE id = ?";
 
-        $star = [$data->name, $data->mass, $data->radius, $data->methodOrDistance, $data->starOrType, $data->id];
+        $star = [$data->name, $data->mass, $data->radius, $data->distance, $data->type, $data->id];
 
         try {
             $query = $this->db->prepare($str_query);

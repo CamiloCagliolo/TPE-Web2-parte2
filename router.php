@@ -30,10 +30,10 @@ $router->addRoute("select/methods/short", "GET", "NavController", "buildMethodSe
 $router->addRoute("select/methods/long", "GET", "NavController", "buildMethodSelect");
 
 //-----RUTAS PARA LOS BOTONES DE EDITAR Y BORRAR DE LAS TABLAS, TANTO EXOPLANETAS COMO ESTRELLAS-----------
-$router->addRoute("tables/exoplanets", "PUT", "ExoplanetController", "replace"); 
+$router->addRoute("tables/exoplanets/:ID", "PUT", "ExoplanetController", "replace"); 
 $router->addRoute("tables/exoplanets/:ID", "DELETE", "ExoplanetController", "delete");
 
-$router->addRoute("tables/stars", "PUT", "StarController", "replace");
+$router->addRoute("tables/stars/:ID", "PUT", "StarController", "replace");
 $router->addRoute("tables/stars/:ID", "DELETE", "StarController", "delete");
 //---------------------------------------------------------------------------------------------------------
 

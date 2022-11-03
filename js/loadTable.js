@@ -144,17 +144,29 @@ function main() {
         column = column.nextElementSibling;
         let inputStarOrType = column.firstElementChild.value;
 
-        let object = {
-            "id": id[2],
-            "name": inputName,
-            "mass": inputMass,
-            "radius": inputRadius,
-            "methodOrDistance": inputMethodOrDistance,
-            "starOrType": inputStarOrType,
-        }
+        let object;
 
+        if(id[1] == 'exoplanets'){
+            object = {
+                "name": inputName,
+                "mass": inputMass,
+                "radius": inputRadius,
+                "method": inputMethodOrDistance,
+                "star": inputStarOrType,
+            }
+        }
+        else if(id[1] == 'stars'){
+            object = {
+                "name": inputName,
+                "mass": inputMass,
+                "radius": inputRadius,
+                "distance": inputMethodOrDistance,
+                "type": inputStarOrType,
+            }
+        }
+            
         try {
-            let response = await fetch(url+"/"+id[1], {
+            let response = await fetch(`${url}/${id[1]}/${id[2]}`, {
                 "method": "PUT",
                 "headers": {"Content-Type": "application/json"},
                 "body": JSON.stringify(object),

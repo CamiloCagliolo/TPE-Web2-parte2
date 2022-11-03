@@ -36,7 +36,7 @@ class Controller{
     protected function add($entity){
         $success = $this->model->insert($entity);
         if($success){
-            (new MessageController())->HTTPMessage(200, 'Addition successful.');
+            (new MessageController())->HTTPMessage(201, 'Addition successful.');
         }
         else{
             (new MessageController())->HTTPMessage(400, 'Addition failed. Try again.');
@@ -45,9 +45,12 @@ class Controller{
 
     public function replace(){
         if($this->session){
+            $params = explode('/',$_GET['action']);
+            $id = array_pop($params);
+            $this->data->id = $id;
             $success = $this->model->update($this->data);
             if($success){
-                (new MessageController())->HTTPMessage(200, 'Exoplanet edition successful.');
+                (new MessageController())->HTTPMessage(200, 'Edition successful.');
             }
             else{
                 (new MessageController())->HTTPMessage(400, 'Edition failed. Try again.');

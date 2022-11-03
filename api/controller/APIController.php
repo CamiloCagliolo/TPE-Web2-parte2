@@ -13,7 +13,13 @@ class APIController{
 
     public function getAll(){
         $data = $this->model->getAllData();
-        $this->view->showData($data);
+        if($data != null){
+            $this->view->showData($data);
+        }
+        else{
+            $this->view->showMessage('Nothing found.', 404);
+        }
+        
     }
 
     public function getOne(){
@@ -37,17 +43,30 @@ class APIController{
             $this->view->showMessage('Deletion successful.');
         }
         else{
-            $this->view->showMessage('Unable to delete the requested item.', 400);
+            $this->view->showMessage("Unable to delete the requested item. If you're trying to delete a star, make sure it has no exoplanets associated.", 400);
         }
     }
 
     protected function add($entity){
         $success = $this->model->insert($entity);
         if($success){
-            $this->view->showMessage('Addition successful.');
+            $this->view->showMessage('Addition successful.', 201);
         }
         else{
             $this->view->showMessage("Addition failed. If you're trying to add an exoplanet, make sure that the method and the star that you're trying to assign exist beforehand, and try again.", 400);
+        }
+    }
+
+    public function replace(){
+        $params = explode('/',$_GET['resource']);
+        $id = array_pop($params);
+        $this->data->id = $id;
+        $success = $this->model->update($this->data);
+        if($success){
+            $this->view->showMessage('Edition successful.');;
+        }
+        else{
+            $this->view->showMessage("Edition failed. If you're trying to add an exoplanet, make sure that the method and the star that you're trying to assign exist beforehand, and try again.", 400);
         }
     }
 
