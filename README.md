@@ -1,5 +1,7 @@
 -------------------------------------------------INSTRUCCIONES API------------------------------------------------------
+
 -----------------------------------------------------RESUMEN------------------------------------------------------------
+
 El concepto detrás del trabajo es el de una base de datos de exoplanetas directamente fotografiados. Para ello se registran los exoplanetas en una tabla y las estrellas correspondientes a ellos en otra. Esto tiene sentido en el contexto del trabajo porque hay estrellas que tienen varios planetas. Hay dos recursos accesibles mediante la API: "exoplanet" y "star". Ambos tienen cinco atributos.
 
 Exoplanet tiene: [(string) "name", (float) "mass", (float) "radius", (string) method, (string) star]. Method y star son FOREIGN KEYS que en la tabla de la base de datos se manejan por las IDS correspondientes, pero no hace falta saber las ids para hacer requests. Basta con poner el nombre correspondiente al method y a la star bien escrito.
@@ -7,15 +9,24 @@ Exoplanet tiene: [(string) "name", (float) "mass", (float) "radius", (string) me
 Star tiene: [(string) "name", (float) "mass", (float) "radius", (float) distance, (string) type]. Ninguna es FK así que puede crearse cualquier estrella sin restricción. Sería un equivalente a "categoría" en una tabla de productos, si se quiere.
 
 ----------------------------------------------------REQUESTS------------------------------------------------------------
+
+
 --------GET (todo)-------
+
 Una request GET .../api/exoplanets dará como resultado TODOS los exoplanetas de la tabla ordenadas por nombre de forma descendente. Equivalentemente, una request GET .../api/stars dará TODAS las estrellas de la tabla ordenadas de la misma forma.
 
 SORT Y ORDER: para cambiar el parámetro de referencia a partir del cual se ordena, basta con enviar en la request GET un sort=parametro y un order=asc o bien order=desc. Por ejemplo, .../api/exoplanets/sort=method&order=desc dará como resultado todos los exoplanetas ordenados de forma descendiente según la columna "method".
 
+
+
 --------GET (un elemento)------
+
 Una request GET .../api/exoplanet/:ID donde ":ID" es un número, dará como resultado el exoplaneta asociado a esa id. Similarmente GET .../api/star/:ID dará la estrella asociada a esa ID.
 
+
+
 -------POST-------
+
 Para hacer una request POST, la URI será .../api/exoplanet o .../api/star y el body debe ser un JSON. 
 
 En el caso de ser un exoplaneta, según lo estipulado en el resumen, deberá tener los siguientes atributos (ejemplo):
@@ -40,11 +51,18 @@ En el caso de ser una estrella, deberá enviarse el siguiente JSON:
     "type": "AKJ"
 }
 
+
+
+
 ---------PUT--------
 Para hacer una request POST, la URI será .../api/exoplanet/:ID o .../api/star/:ID y el body debe ser un JSON, de forma equivalente a lo que se sugirió para el método POST. Aquí ":ID" también es el número de ID del objeto de la tabla A SER REEMPLAZADO. 
 
+
+
+
 ---------DELETE-----
 Para hacer una request DELETE, la URI será .../api/exoplanet/:ID o .../api/star/:ID, al igual que antes.
+
 
 
 
