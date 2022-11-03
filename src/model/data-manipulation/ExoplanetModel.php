@@ -4,7 +4,8 @@ require_once "src/model/Model.php";
 class ExoplanetModel extends Model{
 
     public function getAllData(){
-        $query = $this->db->prepare('SELECT e.*, m.name_acronym, s.name as star_name FROM exoplanets e 
+        $query = $this->db->prepare('SELECT e.id, e.name, e.mass, e.radius, m.name_acronym as method, s.name as star 
+                                    FROM exoplanets e 
                                     INNER JOIN methods m ON e.id_method = m.id 
                                     INNER JOIN stars s ON e.id_star = s.id
                                     ORDER BY e.name ASC');
@@ -52,10 +53,11 @@ class ExoplanetModel extends Model{
     }
 
     public function getDataById($id){
-        $query = $this->db->prepare('SELECT e.*, m.name_acronym, s.name as star_name FROM exoplanets e 
+        $query = $this->db->prepare('SELECT e.id, e.name, e.mass, e.radius, m.name_acronym as method, s.name as star 
+                                    FROM exoplanets e 
                                     INNER JOIN methods m ON e.id_method = m.id 
                                     INNER JOIN stars s ON e.id_star = s.id
-                                    WHERE id = ?');
+                                    WHERE e.id = ?');
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_OBJ);
     }
@@ -65,9 +67,9 @@ class ExoplanetModel extends Model{
         try {
             $query = $this->db->prepare('SELECT id FROM methods WHERE name_acronym = ?');
             $query->execute([$name]);
-            $id = $query->fetch(PDO::FETCH_OBJ)->id;
+            $id = @$query->fetch(PDO::FETCH_OBJ)->id;
             return $id;
-        } catch (Exception $ex) {
+        } catch (Exception) {
             return null;
         }
     }
@@ -77,9 +79,9 @@ class ExoplanetModel extends Model{
         try {
             $query = $this->db->prepare('SELECT id FROM stars WHERE name = ?');
             $query->execute([$name]);
-            $id = $query->fetch(PDO::FETCH_OBJ)->id;
+            $id = @$query->fetch(PDO::FETCH_OBJ)->id;
             return $id;
-        } catch (Exception $ex) {
+        } catch (Exception) {
             return null;
         }
     }

@@ -8,7 +8,7 @@ class APIController{
 
     public function __construct(){
         $this->view = new APIView();
-        $this->data = json_decode("http//input");
+        $this->data = json_decode(file_get_contents("php://input"));
     }
 
     public function getAll(){
@@ -38,6 +38,16 @@ class APIController{
         }
         else{
             $this->view->showMessage('Unable to delete the requested item.', 400);
+        }
+    }
+
+    protected function add($entity){
+        $success = $this->model->insert($entity);
+        if($success){
+            $this->view->showMessage('Addition successful.');
+        }
+        else{
+            $this->view->showMessage("Addition failed. If you're trying to add an exoplanet, make sure that the method and the star that you're trying to assign exist beforehand, and try again.", 400);
         }
     }
 

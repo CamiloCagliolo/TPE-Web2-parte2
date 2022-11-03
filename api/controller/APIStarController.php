@@ -9,4 +9,10 @@ class APIStarController extends APIController{
         parent::__construct();
         $this->model = new StarModel();
     }
+
+    public function addStar(){
+        $data = $this->data;
+        $star = [$data->name, $data->mass, $data->radius,$data->distance, $data->type];
+        parent::add($star);
+    }
 }

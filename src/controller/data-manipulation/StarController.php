@@ -14,8 +14,8 @@ class StarController extends Controller{
 
     public function addStar(){
         if($this->session){
-            $star = $this->data;
-            $star = [$star->name, $star->mass, $star->radius,$star->distance, $star->type];
+            $data = $this->data;
+            $star = [$data->name, $data->mass, $data->radius,$data->distance, $data->type];
             parent::add($star);
         }
         else{

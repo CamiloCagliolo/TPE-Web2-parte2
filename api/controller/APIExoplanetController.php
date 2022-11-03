@@ -8,4 +8,10 @@ class APIExoplanetController extends APIController{
         parent::__construct();
         $this->model = new ExoplanetModel();
     }
+
+    public function addExoplanet(){
+        $data = $this->data;
+        $exoplanet = [$data->name, $data->mass, $data->radius, $data->method, $data->star];
+        parent::add($exoplanet);
+    }
 }

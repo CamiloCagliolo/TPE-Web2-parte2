@@ -17,8 +17,8 @@
                     <td>{$exoplanet -> name}</td>
                     <td>{$exoplanet -> mass}</td>
                     <td>{$exoplanet -> radius}</td>
-                    <td>{$exoplanet -> name_acronym}</td>
-                    <td>{$exoplanet -> star_name}</td>
+                    <td>{$exoplanet -> method}</td>
+                    <td>{$exoplanet -> star}</td>
                     {if $session}
                         <td><input type="button" value="Edit" class="edit-btn btn btn-dark" id="edit-exoplanets-{$exoplanet->id}">
                         </td>

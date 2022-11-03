@@ -15,8 +15,8 @@ class ExoplanetController extends Controller{
 
     public function addExoplanet(){
         if($this->session){
-            $exo = $this->data;
-            $exoplanet = [$exo->name, $exo->mass, $exo->radius,$exo->method, $exo->star];
+            $data = $this->data;
+            $exoplanet = [$data->name, $data->mass, $data->radius,$data->method, $data->star];
             parent::add($exoplanet);
         }
         else{
