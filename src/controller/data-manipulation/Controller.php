@@ -1,5 +1,5 @@
 <?php
-
+require_once "src/helper/MessageHelper.php";
 class Controller{
     protected $model;
     protected $view;
@@ -22,24 +22,24 @@ class Controller{
             $id = array_pop($params);
             $success = $this->model->delete($id);
             if($success){
-                (new MessageController())->HTTPMessage(200, 'Deletion successful.');
+                (new MessageHelper())->returnHTTPMessage(200, 'Deletion successful.');
             }
             else{
-                (new MessageController())->HTTPMessage(400, "Deletion failed. If you're trying to delete a star, make sure it doesn't have any associated exoplanet, and try again.");
+                (new MessageHelper())->returnHTTPMessage(400, "Deletion failed. If you're trying to delete a star, make sure it doesn't have any associated exoplanet, and try again.");
             }
         }
         else{
-            (new MessageController())->HTTPMessage(403, "You don't have enough permissions.");
+            (new MessageHelper())->returnHTTPMessage(403, "You don't have enough permissions.");
         }
     }
     
     protected function add($entity){
         $success = $this->model->insert($entity);
         if($success){
-            (new MessageController())->HTTPMessage(201, 'Addition successful.');
+            (new MessageHelper())->returnHTTPMessage(201, 'Addition successful.');
         }
         else{
-            (new MessageController())->HTTPMessage(400, 'Addition failed. Try again.');
+            (new MessageHelper())->returnHTTPMessage(400, 'Addition failed. Try again.');
         }
     }
 
@@ -50,14 +50,14 @@ class Controller{
             $this->data->id = $id;
             $success = $this->model->update($this->data);
             if($success){
-                (new MessageController())->HTTPMessage(200, 'Edition successful.');
+                (new MessageHelper())->returnHTTPMessage(200, 'Edition successful.');
             }
             else{
-                (new MessageController())->HTTPMessage(400, 'Edition failed. Try again.');
+                (new MessageHelper())->returnHTTPMessage(400, 'Edition failed. Try again.');
             }
         }
         else{
-            (new MessageController())->HTTPMessage(403, "You don't have enough permissions.");
+            (new MessageHelper())->returnHTTPMessage(403, "You don't have enough permissions.");
         }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 require_once "src/model/MethodModel.php";
 require_once "src/view/NavView.php";
-require_once "MessageController.php";
+require_once "src/helper/MessageHelper.php";
 
 class NavController{
     private $model;
@@ -25,7 +25,7 @@ class NavController{
         }
         else{
             $error = "logged";
-            (new MessageController($error))->errorPage();
+            (new MessageHelper($error))->showError();
         }
     }
 
@@ -35,7 +35,7 @@ class NavController{
         }
         else{
             $error = 'cantregister';
-            (new MessageController($error))->errorPage();
+            (new MessageHelper($error))->showError();
         }
     }
 
@@ -52,7 +52,7 @@ class NavController{
             $this->view->showAdd();
         }
         else{
-            (new MessageController("permission"))->errorPage();
+            (new MessageHelper("permission"))->showError();
         }
         
     }

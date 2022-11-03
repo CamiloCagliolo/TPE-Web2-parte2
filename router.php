@@ -2,7 +2,7 @@
 require_once "libs/Router.php";
 require_once "src/controller/NavController.php";
 require_once "src/controller/UserController.php";
-require_once "src/controller/MessageController.php";
+require_once "src/helper/MessageHelper.php";
 require_once "src/controller/data-manipulation/ExoplanetController.php";
 require_once "src/controller/data-manipulation/StarController.php";
 

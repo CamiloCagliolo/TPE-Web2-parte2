@@ -1,7 +1,7 @@
 <?php
-require_once "ParentView.php";
+require_once "src/view/ParentView.php";
 
-class MessageView extends ParentView{
+class MessageHelper extends ParentView{
 
     public function __construct($error = null){
         parent::__construct();

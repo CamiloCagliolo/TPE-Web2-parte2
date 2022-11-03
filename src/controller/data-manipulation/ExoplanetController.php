@@ -1,8 +1,7 @@
 <?php
 require_once "Controller.php";
-require_once "./././src/controller/MessageController.php";
-require_once "./././src/model/data-manipulation/ExoplanetModel.php";
-require_once "./././src/view/ExoplanetView.php";
+require_once "src/model/data-manipulation/ExoplanetModel.php";
+require_once "src/view/ExoplanetView.php";
 
 class ExoplanetController extends Controller{
 
@@ -20,7 +19,7 @@ class ExoplanetController extends Controller{
             parent::add($exoplanet);
         }
         else{
-            (new MessageController())->HTTPMessage(403, "You don't have enough permissions.");
+            (new MessageHelper())->returnHTTPMessage(403, "You don't have enough permissions.");
         }
     }
 }

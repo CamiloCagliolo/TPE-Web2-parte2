@@ -1,5 +1,4 @@
 <?php
-
 require_once "Controller.php";
 require_once "src/model/data-manipulation/StarModel.php";
 require_once "src/view/StarView.php";
@@ -19,7 +18,7 @@ class StarController extends Controller{
             parent::add($star);
         }
         else{
-            (new MessageController())->HTTPMessage(403, "You don't have enough permissions.");
+            (new MessageHelper())->returnHTTPMessage(403, "You don't have enough permissions.");
         }
     }
 }
