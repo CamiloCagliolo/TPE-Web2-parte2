@@ -21,12 +21,23 @@ class APIController{
         else{
             $data = $this->model->getAllData();
         }
+
+        if(isset($_GET['page']) && isset($_GET['limit'])){
+            $page = intval($_GET['page'])-1;
+            $limit = intval($_GET['limit']);
+            
+            $data = array_slice($data, $page*$limit, $limit);
+        }
+        else if(isset($_GET['page']) && !isset($_GET['limit'])){
+            $this->view->showMessage('Specify a limit value for your pagination.', 400);
+            return;
+        }
         
         if($data != null){
             $this->view->showData($data);
         }
         else{
-            $this->view->showMessage('Nothing found.', 404);
+            $this->view->showMessage('Nothing found for this request criteria.', 404);
         }
         
     }

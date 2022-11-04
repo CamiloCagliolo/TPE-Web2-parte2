@@ -17,6 +17,18 @@ Una request GET .../api/exoplanets dará como resultado TODOS los exoplanetas de
 
 SORT Y ORDER: para cambiar el parámetro de referencia a partir del cual se ordena, basta con enviar en la request GET un sort=parametro y un order=asc o bien order=desc. Por ejemplo, .../api/exoplanets/sort=method&order=desc dará como resultado todos los exoplanetas ordenados de forma descendiente según la columna "method".
 
+PAGINACIÓN: para paginar los resultados hace falta agregar los parámetros page=n&limit=m. Por ejemplo, para sacar la página 2 de una paginación de 10 elementos, ordenados por "radius", en orden descendente, se podría hacer la siguiente request: .../api/exoplanets/sort=radius&order=desc&page=2&limit=10.
+
+FILTRO: para filtrar los resultados en base a un atributo, basta con elegir alguno de los cinco atributos de cada tabla y dar un valor para ese atributo. Por ejemplo, .../api/stars?name=coco va a devolver todas las estrellas que se llamen coco. Además, se puede especificar un atributo "contains". Por ejemplo, .../api/exoplanets?name=s&contains=true va a devolver todas las estrellas que contengan una s en su nombre. "contains" por default es falso, pero se puede especificar contains=false.
+
+
+
+Un ejemplo de request que hace uso de TODO, sería el siguiente:
+
+.../api/exoplanets?sort=radius&order=asc&page=2&limit=6&contains=true&name=a
+
+que traerá los segundos (page=2) 6 exoplanetas (exoplanets, limit=6), ordenados según su radio (sort=radius) en orden ascendente (order=asc), que contengan (contains=true) la letra a en su nombre (name=a).
+
 
 
 --------GET (un elemento)------
@@ -80,6 +92,8 @@ La base de datos tiene CUATRO TABLAS: exoplanets, stars, methods y users. Exopla
 ----------Sobre la página:
 
 En total hay CUATRO MVC. Cada una de las tablas es operada por un Model y tiene su propio Controller y View, SALVO el model para la tabla methods que es operado por el NavController. NavController es el controller que se encarga únicamente de la navegación por la página y hace uso de ese model en particular porque lo necesita para renderizar cierto contenido, pero nada más: el contenido de methods no es editable de ninguna forma. MessageHelper es simplemente un ayudante que se invoca en los controllers para manejar las páginas de error (por ejemplo, al querer entrar a páginas restringidas o que no existen) y mensajes HTTP para que JavaScript los renderice en la página.
+
+La página está armada fundamentalmente en SSR, porque encontré más cómodo traer el HTML ya armado desde el servidor, hacer el control de sesión mediante $_SESSION y mostrarlo con un JavaScript sencillo que rehacer todo el código JS para pedir los datos por la API y hacer un sistema de autorización con tokens manejados desde JS.
 
 ----------Explicación de la estructura de los archivos: 
 

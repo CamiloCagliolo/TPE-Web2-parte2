@@ -7,38 +7,55 @@ class ExoplanetModel extends Model{
         $str_query = 'SELECT e.id, e.name, e.mass, e.radius, m.name_acronym as method, s.name as star 
         FROM exoplanets e 
         INNER JOIN methods m ON e.id_method = m.id 
-        INNER JOIN stars s ON e.id_star = s.id
-        ORDER BY ';
+        INNER JOIN stars s ON e.id_star = s.id';
 
-        switch($sort){
-            case 'name':
-                $str_query .= 'e.name ';
-                break;
-            case 'mass':
-                $str_query .= 'e.mass ';
-                break;
-            case 'radius':
-                $str_query .= 'e.radius ';
-                break;
-            case 'method':
-                $str_query .= 'm.name_acronym ';
-                break;
-            case 'star':
-                $str_query .= 's.name ';
-                break;
-            default:
-                return null;
+        $columns = array('name' => 'e.name ', 
+                        'mass' => 'e.mass ', 
+                        'radius' => 'e.radius ',
+                        'method' => 'm.name_acronym ',
+                        'star' => 's.name ');
+
+        $filter = $this->readFilter();                           //LEE SI VINO UN FILTRO VÁLIDO Y ASEGURA QUE QUEDA EN 
+        if($filter != null){                                    //TÉRMINOS DEL ARREGLO ASOCIATIVO DE MÁS ARRIBA
+            $str_query .= "\nWHERE $columns[$filter] LIKE ?";
+            $filterValue = $_GET[$filter];
         }
 
-        if(strtoupper($order) == 'ASC' || strtoupper($order) == 'DESC'){
-            $str_query .= $order;
+        if(isset($columns[$sort])){                             //LEE SI VINO UN CRITERIO DE ORDEN VÁLIDO Y ASEGURA QUE
+            $str_query .=  "\nORDER BY $columns[$sort] ";       //QUEDA EN TÉRMINOS DEL ARREGLO ASOCIATIVO DE ARRIBA
+        }                                                       //SI SE ENVIÓ UN VALOR INVÁLIDO ARROJA 404.
+        else{
+            return null;
+        }
+
+        if(strtoupper($order) == 'ASC' || strtoupper($order) == 'DESC'){   //LEE SI SE ESPECIFICÓ UN ORDEN. SI SE ENVIÓ
+            $str_query .= strtoupper($order);                              //UN VALOR DE ORDER INVÁLIDO, ARROJA NULL -> 404.
         }
         else{
             return null;
         }
 
         $query = $this->db->prepare($str_query);
-        $query->execute();
+
+        //CHEQUEA QUE EL FILTRO EXISTA. SI EL FILTRO EXISTE, CHEQUEA EL VALOR DE LA VARIABLE "contains", QUE ES PARA DECIDIR
+        //SI EL USUARIO QUIERE FILTRAR POR AQUELLOS ELEMENTOS QUE -CONTENGAN- EL VALOR EN EL ATRIBUTO ESPECIFICADO O, SI NO
+        //ESPECIFICA NADA O ESPECIFICA false BUSCARÁ UNA IGUALDAD EXACTA.
+
+        if($filter != null){
+            if(isset($_GET["contains"]) && strtolower($_GET["contains"]) == 'true'){
+                $query->execute(["%".$filterValue."%"]);
+            }
+            else if(isset($_GET["contains"]) && strtolower($_GET["contains"]) != 'false'){
+                return null;
+            }
+            else{
+                $query->execute([$filterValue]);
+            }                          
+        }
+        else{
+            $query->execute();                                          
+        }
+
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -115,4 +132,13 @@ class ExoplanetModel extends Model{
         }
     }
 
+    private function readFilter(){
+        $possibleFilters = ["name", "mass", "radius", "method", "star"];
+        foreach($possibleFilters as $filter){
+            if(isset($_GET[$filter])){
+                return $filter;
+            }
+        }
+        return null;
+    }
 }

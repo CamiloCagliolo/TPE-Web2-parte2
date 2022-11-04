@@ -4,37 +4,52 @@ require_once "src/model/Model.php";
 class StarModel extends Model{
     
     public function getAllData($sort = 'name', $order = 'ASC'){
-        $str_query = 'SELECT * FROM stars ORDER BY ';
+        $str_query = 'SELECT * FROM stars';
 
-        switch($sort){
-            case 'name':
-                $str_query .= 'name ';
-                break;
-            case 'mass':
-                $str_query .= 'mass ';
-                break;
-            case 'radius':
-                $str_query .= 'radius ';
-                break;
-            case 'distance':
-                $str_query .= 'distance ';
-                break;
-            case 'type':
-                $str_query .= 'type ';
-                break;
-            default:
-                return null;
+        $columns = array('name' => 'name ', 
+                        'mass' => 'mass ', 
+                        'radius' => 'radius ',
+                        'distance' => 'distance ',
+                        'type' => 'type ');
+
+        $filter = $this->readFilter();                           //LEE SI VINO UN FILTRO VÁLIDO Y ASEGURA QUE QUEDA EN 
+        if($filter != null){                                    //TÉRMINOS DEL ARREGLO ASOCIATIVO DE MÁS ARRIBA
+            $str_query .= "\nWHERE $columns[$filter] LIKE ?";
+            $filterValue = $_GET[$filter];
+        }
+                        
+        if(isset($columns[$sort])){                             //LEE SI VINO UN CRITERIO DE ORDEN VÁLIDO Y ASEGURA QUE
+            $str_query .= " ORDER BY $columns[$sort]";          //QUEDA EN TÉRMINOS DEL ARREGLO ASOCIATIVO DE ARRIBA
+        }                                                       //SI SE ENVIÓ UN VALOR INVÁLIDO ARROJA 404.
+        else{
+            return null;
         }
 
-        if(strtoupper($order) == 'ASC' || strtoupper($order) == 'DESC'){
-            $str_query .= $order;
+        if(strtoupper($order) == 'ASC' || strtoupper($order) == 'DESC'){    //LEE SI SE ESPECIFICÓ UN ORDEN. SI SE ENVIÓ
+            $str_query .= $order;                                           //UN VALOR DE ORDER INVÁLIDO, ARROJA NULL -> 404.
         }
         else{
             return null;
         }
 
         $query = $this->db->prepare($str_query);
-        $query->execute();
+
+        //CHEQUEA QUE EL FILTRO EXISTA. SI EL FILTRO EXISTE, CHEQUEA EL VALOR DE LA VARIABLE "contains", QUE ES PARA DECIDIR
+        //SI EL USUARIO QUIERE FILTRAR POR AQUELLOS ELEMENTOS QUE -CONTENGAN- EL VALOR EN EL ATRIBUTO ESPECIFICADO O, SI NO
+        //ESPECIFICA NADA O ESPECIFICA false BUSCARÁ UNA IGUALDAD EXACTA.
+        
+        if($filter != null){
+            if(isset($_GET["contains"]) && strtolower($_GET["contains"]) == 'true'){
+                $query->execute(["%".$filterValue."%"]);
+            }
+            else{
+                $query->execute([$filterValue]);
+            }                          
+        }
+        else{
+            $query->execute();                                          
+        }
+
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -74,5 +89,15 @@ class StarModel extends Model{
         $query = $this->db->prepare('SELECT * FROM stars WHERE id = ?');
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_OBJ);
+    }
+
+    private function readFilter(){
+        $possibleFilters = ["name", "mass", "radius", "distance", "type"];
+        foreach($possibleFilters as $filter){
+            if(isset($_GET[$filter])){
+                return $filter;
+            }
+        }
+        return null;
     }
 }
