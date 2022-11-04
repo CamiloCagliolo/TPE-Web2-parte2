@@ -81,7 +81,7 @@ Para hacer una request DELETE, la URI será .../api/exoplanet/:ID o .../api/star
 
 --------------------------------------NOTAS EXTRA PARA EL PROFESOR INTERESADO-------------------------------------------
 
-En esta segunda versión del trabajo, además de cumplir con la consigna, traté de recuperar aquello que hice en la primera entrega. Sé que la consigna no incluía necesariamente reutilizar o rehacer lo anterior, pero dado que el anterior trabajo (https://github.com/CamiloCagliolo/TPE-Web-2) estaba muy mal hecho (me saqué un 4), decidí redimirme e intentar demostrar que la devolución no fue en vano, así que hice un refactoreo de todo el código (fue empezar de casi cero).
+En esta segunda versión del trabajo, además de cumplir con la consigna, traté de recuperar aquello que hice en la primera entrega. Sé que la consigna no incluía necesariamente reutilizar o rehacer lo anterior, pero dado que el anterior trabajo (https://github.com/CamiloCagliolo/TPE-Web-2) estaba muy mal hecho (me saqué un 4), decidí redimirme e intentar demostrar que la devolución no fue en vano, así que hice un refactoreo de todo el código (fue empezar de casi cero). Si existe la posibilidad de una devolución respecto a eso, genial. Además, la página puede servir para 1. visualizar los datos de forma cómoda y 2. añadir datos de forma sencilla y rápida para manipular los datos de la BD y probar la API REST.
 
 --------------------------------------------Explicación del trabajo:
 

@@ -7,9 +7,15 @@ require_once "src/controller/data-manipulation/ExoplanetController.php";
 require_once "src/controller/data-manipulation/StarController.php";
 
 session_start();
+
 define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']) . '/');
 
 $router = new Router();
+
+if($_GET['action'] == ""){
+    $_GET['action'] = "home";
+    $_SERVER['REQUEST_METHOD'] = "GET";
+}
 
 $router->addRoute("home", "GET", "NavController", "sectionHome"); //HOME
 
@@ -41,6 +47,6 @@ $router->addRoute("add", "GET", "NavController", "sectionAdd"); //RUTAS PARA AÑ
 $router->addRoute("add/exoplanets", "POST", "ExoplanetController", "addExoplanet");
 $router->addRoute("add/stars", "POST", "StarController", "addStar");
 
-$router->setDefaultRoute("MessageController", "errorPage"); //DEFAULT: ERROR 404
+$router->setDefaultRoute("MessageHelper", "showError"); //DEFAULT: ERROR 404
 
 $router->route($_GET['action'], $_SERVER['REQUEST_METHOD']);

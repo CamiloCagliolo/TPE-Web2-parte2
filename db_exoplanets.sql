@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-11-2022 a las 04:41:27
+-- Tiempo de generación: 04-11-2022 a las 05:26:12
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -41,7 +41,6 @@ CREATE TABLE `exoplanets` (
 --
 
 INSERT INTO `exoplanets` (`id`, `name`, `mass`, `radius`, `id_method`, `id_star`) VALUES
-(1, 'AB Aurigae b', 10.5, 2.75, 1, 2),
 (2, 'Beta Pictoris b', 12.7, 1.5, 5, 1),
 (3, '51 Eridani b', 2.6, 1.5, 2, 3),
 (4, 'HR 8799 e', 7, 1.3, 1, 4),
@@ -61,12 +60,13 @@ INSERT INTO `exoplanets` (`id`, `name`, `mass`, `radius`, `id_method`, `id_star`
 (23, 'PDS 70 b', 1.8, 1.2, 7, 23),
 (24, 'PDS 70 c', 1.9, 1.5, 6, 23),
 (25, 'HD 203030 B', 11, 3.1, 6, 24),
-(38, 'Prueba 1', 11, 11, 3, 37),
+(38, 'coco', 2, 1, 3, 40),
 (39, 'Prueba 2', 11, 11, 3, 37),
 (40, 'Prueba 3', 11, 11, 3, 39),
 (41, 'Prueba 4', 11, 11, 3, 39),
 (42, 'Prueba 5', 11, 11, 3, 40),
-(43, 'Prueba 6', 11, 11, 7, 40);
+(43, 'Prueba 6', 11, 11, 7, 40),
+(44, 'AB Aurigae b', 9, 2.75, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -131,11 +131,10 @@ INSERT INTO `stars` (`id`, `name`, `mass`, `radius`, `distance`, `type`) VALUES
 (22, 'GU Piscium', 0.66, 0.54, 155.3, 'M3'),
 (23, 'PDS 70', 0.76, 1.26, 370, 'K7'),
 (24, 'HD 203030', 0.965, 0.86, 128.2, 'K0V'),
-(37, 'Prueba 1', 1, 1, 2, 'aaa'),
+(37, 'Prueba 1', 1, 1, 0, 'bbb'),
 (38, 'Prueba 2', 1, 1, 2, 'aaa'),
 (39, 'Prueba 3', 1, 1, 2, 'aaa'),
-(40, 'Prueba 4', 1, 1, 2, 'aaa'),
-(41, 'Prueba 5', 1, 1, 2, 'aaa');
+(40, 'Prueba 4', 1, 1, 2, 'aaa');
 
 -- --------------------------------------------------------
 
@@ -154,6 +153,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user`, `password`) VALUES
 ('camilo', '$argon2id$v=19$m=65536,t=4,p=1$NXQxVjA2NFdlLzJZMFlreg$ntwU1jYkWI8cctWTMlP5Oykw1Kf7XLt8WQuKle6nNRg'),
+('invitado', '$argon2id$v=19$m=65536,t=4,p=1$YkpNSmd2R3ZjNmpXUmdscg$p4BzXGGfeEAMdc7eZth8Hkv1ZIngPXbY1O7wy2DDimE'),
 ('quomilito', '$2y$10$qd2yyK0RwlL5Ez5jpE5FD.CG42S5uFVjYf0MTYSfENJuQ3DLc7ZFm');
 
 --
@@ -194,7 +194,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `exoplanets`
 --
 ALTER TABLE `exoplanets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `methods`
@@ -206,7 +206,7 @@ ALTER TABLE `methods`
 -- AUTO_INCREMENT de la tabla `stars`
 --
 ALTER TABLE `stars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- Restricciones para tablas volcadas
