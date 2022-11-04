@@ -1,4 +1,4 @@
-<select class="form-control" name="exoplanet-method" required>
+<select class="form-control form-select" name="exoplanet-method" required>
 {if isset($short)}
     {foreach from = $methods item=$method}
         <option value = {$method->name_acronym}>{$method->name_acronym}</option>

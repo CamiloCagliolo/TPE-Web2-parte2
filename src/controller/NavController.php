@@ -65,7 +65,7 @@ class NavController{
     }
 
     public function buildStarSelect(){
-        $data = (new StarModel())->getAllData();
+        $data = (new StarModel())->getAllData('name', 'ASC', null, null, "false");
         $this->view->renderStarSelect($data);
     }
 

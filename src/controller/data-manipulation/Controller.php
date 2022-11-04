@@ -12,7 +12,7 @@ class Controller{
     }
 
     public function buildTable(){
-        $data = $this->model->getAllData();
+        $data = $this->model->getAllData('name', 'ASC', null, null, "false");
         $this->view->renderTable($data);
     }
 
