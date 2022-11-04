@@ -3,7 +3,7 @@ require_once "src/model/data-manipulation/Model.php";
 
 class ExoplanetModel extends Model{
 
-    public function getAllData($sort = 'name', $order = 'ASC'){
+    public function getAllData($sort, $order, $filter, $filterValue, $contains){
         $str_query = 'SELECT e.id, e.name, e.mass, e.radius, m.name_acronym as method, s.name as star 
         FROM exoplanets e 
         INNER JOIN methods m ON e.id_method = m.id 
@@ -16,7 +16,7 @@ class ExoplanetModel extends Model{
                         'star' => 's.name ');
 
 
-        return parent::executeGetAllQuery($sort, $order, $str_query, $columns);
+        return parent::executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query, $columns);
     }
 
     public function insert($exoplanet){
@@ -90,15 +90,5 @@ class ExoplanetModel extends Model{
         } catch (Exception) {
             return null;
         }
-    }
-
-    public function readFilter(){
-        $possibleFilters = ["name", "mass", "radius", "method", "star"];
-        foreach($possibleFilters as $filter){
-            if(isset($_GET[$filter])){
-                return $filter;
-            }
-        }
-        return null;
     }
 }

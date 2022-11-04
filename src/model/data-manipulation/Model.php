@@ -26,12 +26,13 @@ abstract class Model{
         }
     }
 
-    protected function executeGetAllQuery($sort, $order, $str_query, $columns){
-
-        $filter = $this->readFilter();                           //LEE SI VINO UN FILTRO VÁLIDO Y ASEGURA QUE QUEDA EN 
-        if($filter != null){                                    //TÉRMINOS DEL ARREGLO ASOCIATIVO DE MÁS ARRIBA
+    protected function executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query, $columns){
+                                                                
+        if($filter != null && array_key_exists($filter, $columns)){                                   
             $str_query .= "\nWHERE $columns[$filter] LIKE ?";
-            $filterValue = $_GET[$filter];
+        }
+        else if($filter != null){
+            return 400;
         }
                         
         if(array_key_exists($sort, $columns)){                     //LEE SI VINO UN CRITERIO DE ORDEN VÁLIDO Y ASEGURA QUE
@@ -55,11 +56,8 @@ abstract class Model{
         //ESPECIFICA NADA O ESPECIFICA false BUSCARÁ UNA IGUALDAD EXACTA.
 
         if($filter != null){
-            if(isset($_GET["contains"]) && strtolower($_GET["contains"]) == 'true'){
+            if($contains){
                 $query->execute(["%".$filterValue."%"]);
-            }
-            else if(isset($_GET["contains"]) && strtolower($_GET["contains"]) != 'false'){
-                return 400;
             }
             else{
                 $query->execute([$filterValue]);
@@ -71,6 +69,4 @@ abstract class Model{
 
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
-
-    public abstract function readFilter();
 }

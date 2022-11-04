@@ -3,7 +3,7 @@ require_once "src/model/data-manipulation/Model.php";
 
 class StarModel extends Model{
     
-    public function getAllData($sort = 'name', $order = 'ASC'){
+    public function getAllData($sort, $order, $filter, $filterValue, $contains){
         $str_query = 'SELECT * FROM stars';
 
         $columns = array('name' => 'name ', 
@@ -12,7 +12,7 @@ class StarModel extends Model{
                         'distance' => 'distance ',
                         'type' => 'type ');
 
-        return parent::executeGetAllQuery($sort, $order, $str_query, $columns);
+        return parent::executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query, $columns);
     }
 
     public function insert($star){
@@ -51,15 +51,5 @@ class StarModel extends Model{
         $query = $this->db->prepare('SELECT * FROM stars WHERE id = ?');
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_OBJ);
-    }
-
-    public function readFilter(){
-        $possibleFilters = ["name", "mass", "radius", "distance", "type"];
-        foreach($possibleFilters as $filter){
-            if(isset($_GET[$filter])){
-                return $filter;
-            }
-        }
-        return null;
     }
 }

@@ -12,14 +12,30 @@ class APIController{
     }
 
     public function getAll(){
+
+        $filterValue = null;
+        $filter = $this->readFilter();
+        $contains = false;
+        
+        if($filter != null){
+            $filterValue = $_GET[$filter]; 
+        }
+
+        if(isset($_GET["contains"]) && (strtolower($_GET["contains"]) == "true" || strtolower($_GET["contains"]) == "false")){
+            $contains = $_GET["contains"] == "true";
+        }
+        else if(isset($_GET["contains"])){
+            $this->view->showMessage('Bad request. "Contains" parameter has to be true or false.', 400);
+        }
+        
         if(isset($_GET['sort']) && isset($_GET['order'])){
-            $data = $this->model->getAllData($_GET['sort'], $_GET['order']);
+            $data = $this->model->getAllData($_GET['sort'], $_GET['order'], $filter, $filterValue, $contains);
         }
         else if(isset($_GET['sort'])){
-            $data = $this->model->getAllData($_GET['sort']);
+            $data = $this->model->getAllData($_GET['sort'], 'ASC', $filter, $filterValue, $contains);
         }
         else{
-            $data = $this->model->getAllData();
+            $data = $this->model->getAllData('name', 'ASC', $filter, $filterValue, $contains);
         }
 
         if($data == 400){
@@ -97,5 +113,15 @@ class APIController{
 
     public function returnError(){
         $this->view->showMessage('Resource not found. Check your syntax.', 404);
+    }
+
+    protected function readFilter(){
+        $possibleFilters = ["name", "mass", "radius", "method", "star", "distance", "type"];
+        foreach($possibleFilters as $filter){
+            if(isset($_GET[$filter])){
+                return $filter;
+            }
+        }
+        return null;
     }
 }
