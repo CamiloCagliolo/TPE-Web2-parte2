@@ -83,6 +83,8 @@ Para hacer una request DELETE, la URI será .../api/exoplanet/:ID o .../api/star
 
 En esta segunda versión del trabajo, además de cumplir con la consigna, traté de recuperar aquello que hice en la primera entrega. Sé que la consigna no incluía necesariamente reutilizar o rehacer lo anterior, pero dado que el anterior trabajo (https://github.com/CamiloCagliolo/TPE-Web-2) estaba muy mal hecho (me saqué un 4), decidí redimirme e intentar demostrar que la devolución no fue en vano, así que hice un refactoreo de todo el código (fue empezar de casi cero). Si existe la posibilidad de una devolución respecto a eso, genial. Además, la página puede servir para 1. visualizar los datos de forma cómoda y 2. añadir datos de forma sencilla y rápida para manipular los datos de la BD y probar la API REST.
 
+USUARIO Y CONTRASEÑA PARA PODER EDITAR DESDE LA PÁGINA: user: invitado password: 123
+
 --------------------------------------------Explicación del trabajo:
 
 ----------Sobre las tablas: 
@@ -106,4 +108,4 @@ Las carpetas "data-manipulation" están para separar un poco mejor aquellos mode
 
 En la carpeta "api" se encuentran los controller y views para operar las tablas de Exoplanets y Stars. Estos controllers hacen uso de los models en la carpeta src, es decir, los que hice para la página.
 
-El método más complejo es el del GET general, porque es el que se encarga de ordenar, filtrar y paginar. El ordenado lo gestiona en parte el controller y en parte el model (este último lo recibe por parámetro). El filtrado lo maneja íntegramente el model (tiene un método para detectar cuál fue el parámetro utilizado para filtrar). El paginado lo maneja el controller recortando el array. PUEDE PARECER a simple vista que en el proceso hay una vulnerabilidad en la fabricación de las querys; esto no es así. Se evita utilizando un array asociativo, y si algo no está escrito en los términos que ese array lo estipula, entonces se arroja error 400 (Bad Request). 
+El método más complejo es el del GET general, porque es el que se encarga de ordenar, filtrar y paginar. El ordenado lo gestiona en parte el controller y en parte el model (este último lo recibe por parámetro). El filtrado lo maneja íntegramente el model (tiene un método para detectar cuál fue el parámetro utilizado para filtrar). El paginado lo maneja el controller recortando el array. PUEDE PARECER a simple vista que en el proceso hay una vulnerabilidad en la fabricación de las querys; esto no es así. Se evita utilizando un array asociativo, y si algo no está escrito en los términos que ese array lo estipula, entonces se arroja error 400 (Bad Request).
