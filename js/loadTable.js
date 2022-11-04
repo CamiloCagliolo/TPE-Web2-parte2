@@ -10,47 +10,14 @@ function main() {
     let messageDiv = document.querySelector('#message');
 
     exoplanetsBtn.addEventListener('click', (e) => {
-        filterDiv.classList.remove('hidden-block');
         loadTable('exoplanets');
     })
 
     starsBtn.addEventListener('click', (e) => {
-        filterDiv.classList.add('hidden-block');
         loadTable('stars');
     })
 
-    //------------------------------------------------Filters-------------------------------------
-    let filterDiv = document.querySelector('.filter');
-
-    let filterBtn = document.querySelector('#filter-btn');
-    let selectContainer = document.querySelector('#select-container');
-
-    document.querySelector('#filter-none').addEventListener('click', () => {
-        filterBtn.classList.add('hidden-block');
-        selectContainer.innerHTML = ''
-        loadTable('exoplanets');
-    })
-
-    let radioMethod = document.querySelector('#filter-method');
-    radioMethod.addEventListener('click', () => {
-        filterBtn.classList.remove('hidden-block');
-        showSelect('methods');
-    });
-
-    let radioStar = document.querySelector('#filter-star');
-    radioStar.addEventListener('click', () => {
-        filterBtn.classList.remove('hidden-block');
-        showSelect('stars');
-    })
-
-    filterBtn.addEventListener('click', () => {
-        if (radioStar.checked) {
-            loadFilteredTable('exoplanets','star');
-        }
-        else if (radioMethod.checked) {
-            loadFilteredTable('exoplanets','method');
-        }
-    });
+    loadTable('exoplanets');
 
     //-----------------------------------------Table loading--------------------------------------------
 
@@ -63,19 +30,6 @@ function main() {
         }
         catch (error) {
             console.log(error);
-        }
-    }
-
-    async function loadFilteredTable(type, filterBy) {
-        try {
-            stringQuery = url.replace('tables',`${type}/${filterBy}`);
-            let response = await fetch(stringQuery);
-            let content = await response.text();
-            tableDiv.innerHTML = content;
-        }
-        catch (Exc) {
-            console.log(Exc);
-            messageDiv.innerHTML = '<span class="alert alert-warning">There was an error when communicating with the server</span>';
         }
     }
 
@@ -222,10 +176,5 @@ function main() {
             messageDiv.innerHTML = '<div class="alert alert-warning">There was an error when communicating with the server</div>';
             return null;
         }
-    }
-
-    async function showSelect(type) {
-        let selectContainer = document.querySelector('#select-container');
-        selectContainer.innerHTML = await getSelect(type);
     }
 }

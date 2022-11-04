@@ -1,7 +1,11 @@
 <?php
-require_once "src/model/Model.php";
 
-class MethodModel extends Model{
+class MethodModel{
+    private $db;
+
+    public function __construct(){
+        $this->db = new PDO('mysql:host=localhost;'.'dbname=db_exoplanets;charset=utf8', 'root', '');
+    }
 
     public function getMethods(){
         $query = $this->db->prepare('SELECT * FROM methods');

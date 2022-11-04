@@ -1,5 +1,5 @@
 <?php
-require_once "src/model/Model.php";
+require_once "src/model/data-manipulation/Model.php";
 
 class ExoplanetModel extends Model{
 
@@ -15,48 +15,8 @@ class ExoplanetModel extends Model{
                         'method' => 'm.name_acronym ',
                         'star' => 's.name ');
 
-        $filter = $this->readFilter();                           //LEE SI VINO UN FILTRO VÁLIDO Y ASEGURA QUE QUEDA EN 
-        if($filter != null){                                    //TÉRMINOS DEL ARREGLO ASOCIATIVO DE MÁS ARRIBA
-            $str_query .= "\nWHERE $columns[$filter] LIKE ?";
-            $filterValue = $_GET[$filter];
-        }
 
-        if(isset($columns[$sort])){                             //LEE SI VINO UN CRITERIO DE ORDEN VÁLIDO Y ASEGURA QUE
-            $str_query .=  "\nORDER BY $columns[$sort] ";       //QUEDA EN TÉRMINOS DEL ARREGLO ASOCIATIVO DE ARRIBA
-        }                                                       //SI SE ENVIÓ UN VALOR INVÁLIDO ARROJA 404.
-        else{
-            return null;
-        }
-
-        if(strtoupper($order) == 'ASC' || strtoupper($order) == 'DESC'){   //LEE SI SE ESPECIFICÓ UN ORDEN. SI SE ENVIÓ
-            $str_query .= strtoupper($order);                              //UN VALOR DE ORDER INVÁLIDO, ARROJA NULL -> 404.
-        }
-        else{
-            return null;
-        }
-
-        $query = $this->db->prepare($str_query);
-
-        //CHEQUEA QUE EL FILTRO EXISTA. SI EL FILTRO EXISTE, CHEQUEA EL VALOR DE LA VARIABLE "contains", QUE ES PARA DECIDIR
-        //SI EL USUARIO QUIERE FILTRAR POR AQUELLOS ELEMENTOS QUE -CONTENGAN- EL VALOR EN EL ATRIBUTO ESPECIFICADO O, SI NO
-        //ESPECIFICA NADA O ESPECIFICA false BUSCARÁ UNA IGUALDAD EXACTA.
-
-        if($filter != null){
-            if(isset($_GET["contains"]) && strtolower($_GET["contains"]) == 'true'){
-                $query->execute(["%".$filterValue."%"]);
-            }
-            else if(isset($_GET["contains"]) && strtolower($_GET["contains"]) != 'false'){
-                return null;
-            }
-            else{
-                $query->execute([$filterValue]);
-            }                          
-        }
-        else{
-            $query->execute();                                          
-        }
-
-        return $query->fetchAll(PDO::FETCH_OBJ);
+        return parent::executeGetAllQuery($sort, $order, $str_query, $columns);
     }
 
     public function insert($exoplanet){
@@ -132,7 +92,7 @@ class ExoplanetModel extends Model{
         }
     }
 
-    private function readFilter(){
+    public function readFilter(){
         $possibleFilters = ["name", "mass", "radius", "method", "star"];
         foreach($possibleFilters as $filter){
             if(isset($_GET[$filter])){

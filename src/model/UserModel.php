@@ -1,7 +1,11 @@
 <?php
-require_once "src/model/Model.php";
 
-class UserModel extends Model{
+class UserModel{
+    private $db;
+
+    public function __construct(){
+        $this->db = new PDO('mysql:host=localhost;'.'dbname=db_exoplanets;charset=utf8', 'root', '');
+    }
 
     public function getUserData($username){
         $query = $this->db->prepare('SELECT * FROM users WHERE user = ?');
@@ -14,7 +18,7 @@ class UserModel extends Model{
             $query = $this->db->prepare('INSERT INTO users (user,password) VALUES (?,?)');
             $query->execute([$username, $hash]);
             return true;
-        } catch (Exception $ex) {
+        } catch (Exception) {
             return false;
         }
     }
