@@ -36,16 +36,16 @@ abstract class Model{
                         
         if(array_key_exists($sort, $columns)){                     //LEE SI VINO UN CRITERIO DE ORDEN VÁLIDO Y ASEGURA QUE
             $str_query .= "\nORDER BY $columns[$sort] ";          //QUEDA EN TÉRMINOS DEL ARREGLO ASOCIATIVO DE ARRIBA
-        }                                                       //SI SE ENVIÓ UN VALOR INVÁLIDO ARROJA 404.
+        }                                                       //SI SE ENVIÓ UN VALOR INVÁLIDO, ARROJA 400.
         else{
-            return null;
+            return 400;
         }
 
         if(strtoupper($order) == 'ASC' || strtoupper($order) == 'DESC'){    //LEE SI SE ESPECIFICÓ UN ORDEN. SI SE ENVIÓ
-            $str_query .= strtoupper($order);                              //UN VALOR DE ORDER INVÁLIDO, ARROJA NULL -> 404.
+            $str_query .= strtoupper($order);                              //UN VALOR DE ORDER INVÁLIDO, ARROJA 400.
         }
         else{
-            return null;
+            return 400;
         }
 
         $query = $this->db->prepare($str_query);
@@ -59,7 +59,7 @@ abstract class Model{
                 $query->execute(["%".$filterValue."%"]);
             }
             else if(isset($_GET["contains"]) && strtolower($_GET["contains"]) != 'false'){
-                return null;
+                return 400;
             }
             else{
                 $query->execute([$filterValue]);

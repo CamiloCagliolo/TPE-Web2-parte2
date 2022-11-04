@@ -19,7 +19,7 @@ SORT Y ORDER: para cambiar el parámetro de referencia a partir del cual se orde
 
 PAGINACIÓN: para paginar los resultados hace falta agregar los parámetros page=n&limit=m. Por ejemplo, para sacar la página 2 de una paginación de 10 elementos, ordenados por "radius", en orden descendente, se podría hacer la siguiente request: .../api/exoplanets/sort=radius&order=desc&page=2&limit=10.
 
-FILTRO: para filtrar los resultados en base a un atributo, basta con elegir alguno de los cinco atributos de cada tabla y dar un valor para ese atributo. Por ejemplo, .../api/stars?name=coco va a devolver todas las estrellas que se llamen coco. Además, se puede especificar un atributo "contains". Por ejemplo, .../api/exoplanets?name=s&contains=true va a devolver todas las estrellas que contengan una s en su nombre. "contains" por default es falso, pero se puede especificar contains=false.
+FILTRO: para filtrar los resultados en base a un atributo, basta con elegir alguno de los cinco atributos de cada tabla y dar un valor para ese atributo. Por ejemplo, .../api/stars?name=coco va a devolver todas las estrellas que se llamen coco. Además, se puede especificar un atributo "contains". Por ejemplo, .../api/exoplanets?name=s&contains=true va a devolver todas las estrellas que contengan una s en su nombre. "contains" por default es falso, pero se puede especificar contains=false. Si se especifica un atributo que no existe o un valor de "contains" que no es true ni false, la API otorgará 404 not found.
 
 
 
@@ -99,9 +99,11 @@ La página está armada fundamentalmente en SSR, porque encontré más cómodo t
 
 En la carpeta "src" se encuentran todos los Models, Views, Controllers y Helpers que corresponden a la página web. 
 ParentView es una clase padre para todas las otras Views y el Helper. 
-Model es una clase padre para todos los otros Models. 
+Model es una clase padre SÓLO para ExoplanetModel y StarModel.
 Controller es una clase padre SÓLO para ExoplanetController y StarController. 
 Siempre que fue posible elevar métodos y atributos repetidos o extremadamente similares a clases padres, traté de hacerlo. 
 Las carpetas "data-manipulation" están para separar un poco mejor aquellos modelos y controladores que se dedican exclusivamente a la manipulación de los datos en las tablas.
 
-En la carpeta "api" se encuentran los controller y views para operar las tablas de Exoplanets y Stars mediante API REST. Estos controllers hacen uso de los models en la carpeta src, es decir, los que hice para la página.
+En la carpeta "api" se encuentran los controller y views para operar las tablas de Exoplanets y Stars. Estos controllers hacen uso de los models en la carpeta src, es decir, los que hice para la página.
+
+El método más complejo es el del GET general, porque es el que se encarga de ordenar, filtrar y paginar. El ordenado lo gestiona en parte el controller y en parte el model (este último lo recibe por parámetro). El filtrado lo maneja íntegramente el model (tiene un método para detectar cuál fue el parámetro utilizado para filtrar). El paginado lo maneja el controller recortando el array. PUEDE PARECER a simple vista que en el proceso hay una vulnerabilidad en la fabricación de las querys; esto no es así. Se evita utilizando un array asociativo, y si algo no está escrito en los términos que ese array lo estipula, entonces se arroja error 400 (Bad Request). 

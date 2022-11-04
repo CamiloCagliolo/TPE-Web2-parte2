@@ -22,6 +22,11 @@ class APIController{
             $data = $this->model->getAllData();
         }
 
+        if($data == 400){
+            $this->view->showMessage('Bad request. Check your parameters and try again.', 400);
+            return;
+        }
+
         if(isset($_GET['page']) && isset($_GET['limit'])){
             $page = intval($_GET['page'])-1;
             $limit = intval($_GET['limit']);
