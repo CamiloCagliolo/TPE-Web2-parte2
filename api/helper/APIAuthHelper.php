@@ -40,7 +40,7 @@ class APIAuthHelper
         );
 
         $payload = array(
-            "exp" => time() + 60,
+            "exp" => time() + EXPIRATION_TIME,
             "username" => $username,
             "role" => ROLE,
         );

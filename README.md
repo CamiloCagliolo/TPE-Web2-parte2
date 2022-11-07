@@ -11,7 +11,7 @@ Star tiene: `[(string) "name", (float) "mass", (float) "radius", (float) distanc
 ## REQUESTS
 
 ### TOKEN
-Para poder hacer una request de POST, PUT o DELETE primero es necesario tener un token de autorización. Esta autorización se debe pedir a `.../api/auth/token` con un header que especifique `Authorization: Basic username:password`. Ya hay registrados un par de usuarios para hacer pruebas. El más sencillo es:
+Para poder hacer una request de POST, PUT o DELETE primero es necesario tener un token TEMPORAL de autorización (dura sólo TRES MINUTOS). Esta autorización se debe pedir a `.../api/auth/token` con un header que especifique `Authorization: Basic username:password`. Ya hay registrados un par de usuarios para hacer pruebas. El más sencillo es:
 
 `user:` invitado
 `password:` 123
