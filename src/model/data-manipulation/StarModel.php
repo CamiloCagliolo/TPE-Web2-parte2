@@ -1,21 +1,26 @@
 <?php
 require_once "src/model/data-manipulation/Model.php";
 
-class StarModel extends Model{
-    
-    public function getAllData($sort, $order, $filter, $filterValue, $contains){
+class StarModel extends Model
+{
+
+    public function getAllData($sort, $order, $filter, $filterValue, $contains)
+    {
         $str_query = 'SELECT * FROM stars';
 
-        $columns = array('name' => 'name ', 
-                        'mass' => 'mass ', 
-                        'radius' => 'radius ',
-                        'distance' => 'distance ',
-                        'type' => 'type ');
+        $columns = array(
+            'name' => 'name ',
+            'mass' => 'mass ',
+            'radius' => 'radius ',
+            'distance' => 'distance ',
+            'type' => 'type '
+        );
 
         return parent::executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query, $columns);
     }
 
-    public function insert($star){
+    public function insert($star)
+    {
         try {
             $str_query = "INSERT INTO stars (id, name, mass, radius, distance, type) VALUES (NULL, ?, ?, ?, ?, ?)";
             $query = $this->db->prepare($str_query);
@@ -26,7 +31,8 @@ class StarModel extends Model{
         }
     }
 
-    public function update($data){
+    public function update($data)
+    {
 
         $str_query = "UPDATE stars SET name = ?, mass = ?, radius = ?, 
         distance = ?, type = ? WHERE id = ?";
@@ -42,12 +48,14 @@ class StarModel extends Model{
         }
     }
 
-    public function delete($id){
-        $params = ['table'=>'stars', 'id'=>$id];
+    public function delete($id)
+    {
+        $params = ['table' => 'stars', 'id' => $id];
         return parent::delete($params);
     }
 
-    public function getDataById($id){
+    public function getDataById($id)
+    {
         $query = $this->db->prepare('SELECT * FROM stars WHERE id = ?');
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_OBJ);

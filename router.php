@@ -12,7 +12,7 @@ define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'
 
 $router = new Router();
 
-if($_GET['action'] == ""){
+if ($_GET['action'] == "") {
     $_GET['action'] = "home";
     $_SERVER['REQUEST_METHOD'] = "GET";
 }
@@ -36,7 +36,7 @@ $router->addRoute("select/methods/short", "GET", "NavController", "buildMethodSe
 $router->addRoute("select/methods/long", "GET", "NavController", "buildMethodSelect");
 
 //-----RUTAS PARA LOS BOTONES DE EDITAR Y BORRAR DE LAS TABLAS, TANTO EXOPLANETAS COMO ESTRELLAS-----------
-$router->addRoute("tables/exoplanets/:ID", "PUT", "ExoplanetController", "replace"); 
+$router->addRoute("tables/exoplanets/:ID", "PUT", "ExoplanetController", "replace");
 $router->addRoute("tables/exoplanets/:ID", "DELETE", "ExoplanetController", "delete");
 
 $router->addRoute("tables/stars/:ID", "PUT", "StarController", "replace");

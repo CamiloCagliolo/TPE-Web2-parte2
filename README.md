@@ -10,6 +10,15 @@ Star tiene: `[(string) "name", (float) "mass", (float) "radius", (float) distanc
 
 ## REQUESTS
 
+### TOKEN
+Para poder hacer una request de POST, PUT o DELETE primero es necesario tener un token de autorización. Esta autorización se debe pedir a `.../api/auth/token` con un header que especifique `Authorization: Basic username:password`. Ya hay registrados un par de usuarios para hacer pruebas. El más sencillo es:
+
+`user:` invitado
+`password:` 123
+
+Si quieren otro usuario pueden entrar a la página de registro (`.../register`) y registrarse.
+
+Luego hay que usar el token que consiguieron en sus próximas requests que no sean GET, poniendo en el header `Authorization: Bearer {token}`.
 
 ### GET (todo)
 
@@ -22,7 +31,6 @@ PAGINACIÓN: para paginar los resultados hace falta agregar los parámetros `pag
 FILTRO: para filtrar los resultados en base a un atributo, basta con elegir alguno de los cinco atributos de cada tabla y dar un valor para ese atributo. Por ejemplo, `.../api/stars?name=coco` va a devolver todas las estrellas que se llamen coco. Además, se puede especificar un atributo "contains". Por ejemplo, `.../api/exoplanets?name=s&contains=true` va a devolver todas las estrellas que contengan una s en su nombre. "contains" por default es falso, pero se puede especificar `contains=false`. Si se especifica un atributo que no existe o un valor de "contains" que no es true ni false, la API otorgará 404 not found.
 
 
-
 Un ejemplo de request que hace uso de TODO, sería el siguiente:
 
 `.../api/exoplanets?sort=radius&order=asc&page=2&limit=6&contains=true&name=a`
@@ -30,18 +38,16 @@ Un ejemplo de request que hace uso de TODO, sería el siguiente:
 que traerá los segundos (page=2) 6 exoplanetas (exoplanets, limit=6), ordenados según su radio (sort=radius) en orden ascendente (order=asc), que contengan (contains=true) la letra a en su nombre (name=a).
 
 
-
 ### GET (un elemento)
 
 Una request GET `.../api/exoplanet/:ID` donde ":ID" es un número, dará como resultado el exoplaneta asociado a esa id. Similarmente GET `.../api/star/:ID` dará la estrella asociada a esa ID.
-
 
 
 ### POST
 
 Para hacer una request POST, la URI será `.../api/exoplanet` o `.../api/star` y el body debe ser un JSON. 
 
-En el caso de ser un exoplaneta, según lo estipulado en el resumen, deberá tener los siguientes atributos (ejemplo):
+En el caso de ser un exoplaneta, según lo estipulado en el resumen, deberá tener los atributos especificados. Por ejemplo, una request POST podría contener el siguiente body:
 
 ``{
     "name": "coco planeta",
@@ -51,9 +57,9 @@ En el caso de ser un exoplaneta, según lo estipulado en el resumen, deberá ten
     "star": "AB Aurigae"
 }``
 
-donde "KLIP" es un método registrado en la lista y "AB Aurigae" también es una estrella de la lista. La lista de métodos puede consultarse en el home de la página web y las estrellas pueden obtenerse con un GET o también en las tablas de la página web.
+donde "KLIP" es un método registrado en la lista y "AB Aurigae" también es una estrella de la lista. La lista de métodos puede consultarse en el home de la página web y las estrellas pueden obtenerse con un GET o también en las tablas de la página web. Al ser Foreign Keys, si no son valores preexistentes en las otras tablas la API arrojará error.
 
-En el caso de ser una estrella, deberá enviarse el siguiente JSON:
+En el caso de ser una estrella, deberá enviarse un JSON como el siguiente:
 
 ``{
     "name": "coco estrella",
@@ -63,8 +69,7 @@ En el caso de ser una estrella, deberá enviarse el siguiente JSON:
     "type": "AKJ"
 }``
 
-
-
+Donde no hay restricción para ningún atributo.
 
 ### PUT
 Para hacer una request POST, la URI será `.../api/exoplanet/:ID` o `.../api/star/:ID` y el body debe ser un JSON, de forma equivalente a lo que se sugirió para el método POST. Aquí ":ID" también es el número de ID del objeto de la tabla A SER REEMPLAZADO. 
@@ -83,7 +88,12 @@ Para hacer una request DELETE, la URI será `.../api/exoplanet/:ID` o `.../api/s
 
 En esta segunda versión del trabajo, además de cumplir con la consigna, traté de recuperar aquello que hice en la primera entrega. Sé que la consigna no incluía necesariamente reutilizar o rehacer lo anterior, pero dado que el anterior trabajo (https://github.com/CamiloCagliolo/TPE-Web-2) estaba muy mal hecho (me saqué un 4), decidí redimirme e intentar demostrar que la devolución no fue en vano, así que hice un refactoreo de todo el código (fue empezar de casi cero). Si existe la posibilidad de una devolución respecto a eso, genial. Además, la página puede servir para 1. visualizar los datos de forma cómoda y 2. añadir datos de forma sencilla y rápida para manipular los datos de la BD y probar la API REST.
 
-USUARIO Y CONTRASEÑA PARA PODER EDITAR DESDE LA PÁGINA: `user:` invitado `password:` 123
+USUARIO Y CONTRASEÑA PARA PODER EDITAR DESDE LA PÁGINA: 
+
+`user:` invitado 
+`password:` 123
+
+O bien registrarse.
 
 ## Explicación del trabajo:
 

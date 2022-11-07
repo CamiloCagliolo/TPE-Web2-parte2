@@ -2,16 +2,17 @@
 
 document.addEventListener('DOMContentLoaded', loginAndRegister);
 
-function loginAndRegister(){
+function loginAndRegister() {
     let url = window.location.href;
     let messageDiv = document.querySelector('#message');
     let form = document.querySelector('.user-form');
 
-    form.addEventListener('submit', (e)=>{
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
-        submit();});
+        submit();
+    });
 
-    async function submit(){
+    async function submit() {
         let data = new FormData(form);
 
         let user = {
@@ -27,10 +28,10 @@ function loginAndRegister(){
 
         messageDiv.classList.add('alert');
         messageDiv.innerHTML = await response.text();
-        messageDiv.classList.add(response.ok?'alert-success':'alert-warning');
+        messageDiv.classList.add(response.ok ? 'alert-success' : 'alert-warning');
 
-        if(response.status == 200){
-            setTimeout(()=>{window.location.replace(url.replace("login", "home"))}, 1500);
+        if (response.status == 200) {
+            setTimeout(() => { window.location.replace(url.replace("login", "home")) }, 1500);
         }
 
     }

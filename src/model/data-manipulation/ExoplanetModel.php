@@ -1,25 +1,30 @@
 <?php
 require_once "src/model/data-manipulation/Model.php";
 
-class ExoplanetModel extends Model{
+class ExoplanetModel extends Model
+{
 
-    public function getAllData($sort, $order, $filter, $filterValue, $contains){
+    public function getAllData($sort, $order, $filter, $filterValue, $contains)
+    {
         $str_query = 'SELECT e.id, e.name, e.mass, e.radius, m.name_acronym as method, s.name as star 
         FROM exoplanets e 
         INNER JOIN methods m ON e.id_method = m.id 
         INNER JOIN stars s ON e.id_star = s.id';
 
-        $columns = array('name' => 'e.name ', 
-                        'mass' => 'e.mass ', 
-                        'radius' => 'e.radius ',
-                        'method' => 'm.name_acronym ',
-                        'star' => 's.name ');
+        $columns = array(
+            'name' => 'e.name ',
+            'mass' => 'e.mass ',
+            'radius' => 'e.radius ',
+            'method' => 'm.name_acronym ',
+            'star' => 's.name '
+        );
 
 
         return parent::executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query, $columns);
     }
 
-    public function insert($exoplanet){
+    public function insert($exoplanet)
+    {
         try {
             $exoplanet[3] = $this->getIdMethodByName($exoplanet[3]);
             $exoplanet[4] = $this->getIdStarByName($exoplanet[4]);
@@ -28,13 +33,13 @@ class ExoplanetModel extends Model{
             $query = $this->db->prepare($str_query);
             $query->execute($exoplanet);
             return true;
-            
         } catch (Exception) {
             return false;
         }
     }
 
-    public function update($data){
+    public function update($data)
+    {
 
         $idMethod = $this->getIdMethodByName($data->method);
         $idStar = $this->getIdStarByName($data->star);
@@ -53,12 +58,14 @@ class ExoplanetModel extends Model{
         }
     }
 
-    public function delete($id){
-        $params = ['table'=>'exoplanets', 'id'=>$id];
+    public function delete($id)
+    {
+        $params = ['table' => 'exoplanets', 'id' => $id];
         return parent::delete($params);
     }
 
-    public function getDataById($id){
+    public function getDataById($id)
+    {
         $query = $this->db->prepare('SELECT e.id, e.name, e.mass, e.radius, m.name_acronym as method, s.name as star 
                                     FROM exoplanets e 
                                     INNER JOIN methods m ON e.id_method = m.id 
@@ -67,7 +74,7 @@ class ExoplanetModel extends Model{
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_OBJ);
     }
-    
+
     private function getIdMethodByName($name)
     {
         try {

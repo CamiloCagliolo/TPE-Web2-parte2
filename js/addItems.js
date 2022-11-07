@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", main);
 
-function main(){
+function main() {
     let root = window.location.href;
 
     let exoplanetForm = document.querySelector('#exoplanet-form');
@@ -17,30 +17,32 @@ function main(){
     refreshSelects("methods");
     refreshSelects("stars");
 
-    exoplanetForm.addEventListener('submit', (e)=>{
+    exoplanetForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        processForm(exoplanetForm)});
-    
-    starForm.addEventListener('submit', (e)=>{
-        e.preventDefault();
-        processForm(starForm)});
+        processForm(exoplanetForm)
+    });
 
-    exoplanetRadio.addEventListener('click', ()=>{
+    starForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        processForm(starForm)
+    });
+
+    exoplanetRadio.addEventListener('click', () => {
         refreshSelects("methods");
         refreshSelects("stars");
         ocultarFormulario(exoplanetRadio.value);
     })
 
-    starRadio.addEventListener('click',()=>{
+    starRadio.addEventListener('click', () => {
         ocultarFormulario(starRadio.value);
     })
 
 
-    async function processForm(form){
+    async function processForm(form) {
         let data = new FormData(form);
         let object;
         let type;
-        if(exoplanetRadio.checked){
+        if (exoplanetRadio.checked) {
             object = {
                 "name": data.get("exoplanet-name").replace(/\//g, ""),
                 "mass": data.get("exoplanet-mass"),
@@ -50,7 +52,7 @@ function main(){
             }
             type = exoplanetRadio.value;
         }
-        else{
+        else {
             object = {
                 "name": data.get("star-name"),
                 "mass": data.get("star-mass"),
@@ -60,41 +62,41 @@ function main(){
             }
             type = starRadio.value;
         }
-        
+
 
         await sendDataAndRetrieveResponse(object, type);
     }
 
-    async function sendDataAndRetrieveResponse(object, type){
-        try{
+    async function sendDataAndRetrieveResponse(object, type) {
+        try {
             let response = await fetch(`${root}/${type}`, {
                 "method": "POST",
-                "headers": {"Content-Type": "application/json"},
+                "headers": { "Content-Type": "application/json" },
                 "body": JSON.stringify(object),
             });
 
             messageDiv.classList.add('alert');
-            messageDiv.classList.add(response.ok?'alert-success':'alert-warning');
+            messageDiv.classList.add(response.ok ? 'alert-success' : 'alert-warning');
             messageDiv.innerHTML = await response.text();
         }
-        catch (exc){
+        catch (exc) {
             console.log(exc);
         }
     }
 
-    async function refreshSelects(type){
+    async function refreshSelects(type) {
         let select = await getSelect(type);
-        if(type == 'methods'){
+        if (type == 'methods') {
             selectMethodsContainer.innerHTML = select;
         }
-        else if(type == 'stars'){
+        else if (type == 'stars') {
             selectStarsContainer.innerHTML = select;
         }
     }
 
-    async function getSelect(type){
+    async function getSelect(type) {
         try {
-            stringQuery = root.replace("add", `select/${type}${type === 'methods'?"/long":""}`);
+            stringQuery = root.replace("add", `select/${type}${type === 'methods' ? "/long" : ""}`);
             let response = await fetch(stringQuery);
             let content = await response.text();
             return content;
@@ -106,12 +108,12 @@ function main(){
         }
     }
 
-    function ocultarFormulario(value){
-        if (value == 'exoplanets'){
+    function ocultarFormulario(value) {
+        if (value == 'exoplanets') {
             exoplanetForm.classList.remove('hidden');
             starForm.classList.add('hidden');
         }
-        else if (value == 'stars'){
+        else if (value == 'stars') {
             exoplanetForm.classList.add('hidden');
             starForm.classList.remove('hidden');
         }

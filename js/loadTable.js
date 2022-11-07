@@ -100,7 +100,7 @@ function main() {
 
         let object;
 
-        if(id[1] == 'exoplanets'){
+        if (id[1] == 'exoplanets') {
             object = {
                 "name": inputName,
                 "mass": inputMass,
@@ -109,7 +109,7 @@ function main() {
                 "star": inputStarOrType,
             }
         }
-        else if(id[1] == 'stars'){
+        else if (id[1] == 'stars') {
             object = {
                 "name": inputName,
                 "mass": inputMass,
@@ -118,11 +118,11 @@ function main() {
                 "type": inputStarOrType,
             }
         }
-            
+
         try {
             let response = await fetch(`${url}/${id[1]}/${id[2]}`, {
                 "method": "PUT",
-                "headers": {"Content-Type": "application/json"},
+                "headers": { "Content-Type": "application/json" },
                 "body": JSON.stringify(object),
             });
             await unpack(response);
@@ -142,7 +142,7 @@ function main() {
         let type = info.pop();
 
         try {
-            let response = await fetch(url+"/"+type+"/"+idNumber, {
+            let response = await fetch(url + "/" + type + "/" + idNumber, {
                 "method": "DELETE",
             });
 
@@ -152,21 +152,21 @@ function main() {
             console.log(Exc);
             messageDiv.innerHTML = '<span class="alert alert-warning">There was an error when communicating with the server</span>';
         }
-        
+
         loadTable(type);
     }
 
-    async function unpack(response){
+    async function unpack(response) {
         let content = await response.text();
         messageDiv.innerHTML = content;
-        messageDiv.classList.add(response.ok?'alert-success':'alert-warning');
-        messageDiv.classList.remove(response.ok?'alert-warning':'alert-success');
+        messageDiv.classList.add(response.ok ? 'alert-success' : 'alert-warning');
+        messageDiv.classList.remove(response.ok ? 'alert-warning' : 'alert-success');
     }
 
     //--------------------------------------Extra methods for rendering----------------------------------
     async function getSelect(type) {
         try {
-            stringQuery = url.replace("tables", `select/${type}${type === 'methods'?"/short":""}`);
+            stringQuery = url.replace("tables", `select/${type}${type === 'methods' ? "/short" : ""}`);
             let response = await fetch(stringQuery);
             let content = await response.text();
             return content;
