@@ -17,4 +17,8 @@ class APIExoplanetController extends APIController
         $exoplanet = [$data->name, $data->mass, $data->radius, $data->method, $data->star];
         parent::add($exoplanet);
     }
+
+    public function getAll(){
+        parent::getAllData(EXOPLANETS_COLUMNS);
+    }
 }

@@ -18,41 +18,87 @@ class APIController
         $this->authorized = isset($payload->username) && isset($payload->exp) && $payload->exp > time();
     }
 
-    public function getAll()
+    protected function getAllData($validColumns)
     {
-        $filterValue = null;
-        $filter = $this->readFilter();
-        $contains = false;
-
-        if ($filter != null) {
-            $filterValue = $_GET[$filter];
-        }
-
-        if (isset($_GET["contains"]) && (strtolower($_GET["contains"]) == "true" || strtolower($_GET["contains"]) == "false")) {
-            $contains = $_GET["contains"] == "true";
-        } else if (isset($_GET["contains"])) {
-            $this->view->showMessage('Bad request. "Contains" parameter has to be true or false.', 400);
-        }
-
-        if (isset($_GET['sort']) && isset($_GET['order'])) {
-            $data = $this->model->getAllData($_GET['sort'], $_GET['order'], $filter, $filterValue, $contains);
-        } else if (isset($_GET['sort'])) {
-            $data = $this->model->getAllData($_GET['sort'], 'ASC', $filter, $filterValue, $contains);
-        } else {
-            $data = $this->model->getAllData('name', 'ASC', $filter, $filterValue, $contains);
-        }
-
-        if ($data == 400) {
-            $this->view->showMessage('Bad request. Check your parameters and try again.', 400);
+        //Chequea que todos los parámetros enviados por GET sean válidos.
+        if(!$this->checkRequests($validColumns)){
+            $this->view->showMessage('Bad request: some requirements are not supported or are not valid.', 400);
             return;
         }
 
-        if (isset($_GET['page']) && isset($_GET['limit'])) {
+        //Valores por defecto
+        $sort = 'name';
+        $order = 'ASC';
+        $filter = $this->readFilter($validColumns);
+        $filterValue = null;
+        $contains = false;
+        
+        
+        //Si se detectó un filtro, busca qué valor tiene y busca si el usuario definió el criterio "contains".
+        if ($filter != null) {
+            $filterValue = $_GET[array_keys($validColumns, $filter)[0]];
+
+            if(isset($_GET["contains"])){
+                switch(strtolower($_GET["contains"])){
+                    case "true":
+                        $contains = true;
+                        break;
+                    case "false":
+                        $contains = false;
+                        break;
+                    default:
+                        $this->view->showMessage('Bad request. "Contains" parameter has to be true or false.', 400);
+                        return;
+                }
+            }
+        }
+
+        //Si se definió un criterio de ordenado, aquí se detecta.
+        if(isset($_GET['sort'])){
+            if(array_key_exists($_GET['sort'], $validColumns)){
+                $sort = $_GET['sort'];
+            }
+            else{
+                $this->view->showMessage('Bad request. Sort value has to be a valid attribute.', 400);
+                return;
+            }
+        }
+
+        //Si se definió un orden, aquí se detecta.
+        if(isset($_GET['order'])){
+            if(strtoupper($_GET['order']) == 'ASC' || strtoupper($_GET['order']) == 'DESC'){
+                $order = strtoupper($_GET['order']);
+            }
+            else{
+                $this->view->showMessage('Bad request. Order value has to be ASC or DESC.', 400);
+                return;
+            }
+        }
+
+        $data = $this->model->getAllData($sort, $order, $filter, $filterValue, $contains);
+
+        //Paginación. Si no se envió nada no se pagina, si se enviaron valores de paginación se recorta el array según lo especificado por el usuario.
+        $page = null;
+        $limit = null;
+
+        if(isset($_GET['page'])){
+            $page = $_GET['page'];
+        }
+        if(isset($_GET['limit'])){
+            $limit = $_GET['limit'];
+        }
+
+        if (is_numeric($page) && is_numeric($limit)) {
             $page = intval($_GET['page']) - 1;
             $limit = intval($_GET['limit']);
 
             $data = array_slice($data, $page * $limit, $limit);
-        } else if (isset($_GET['page']) && !isset($_GET['limit'])) {
+        }
+        else if(!is_numeric($page) || !is_numeric($limit) && $limit != null){
+            $this->view->showMessage('Both page and limit have to be numeric values.', 400);
+            return;
+        }
+        else if (is_numeric($page) && $limit == null){
             $this->view->showMessage('Specify a limit value for your pagination.', 400);
             return;
         }
@@ -128,14 +174,23 @@ class APIController
         $this->view->showMessage('Resource not found. Check your syntax.', 404);
     }
 
-    protected function readFilter()
+    protected function readFilter($validColumns)
     {
-        $possibleFilters = VALID_COLUMNS;
-        foreach ($possibleFilters as $filter) {
-            if (isset($_GET[$filter])) {
-                return $filter;
+        foreach (array_keys($validColumns) as $column) {
+            if (isset($_GET[$column])) {
+                return $validColumns[$column];
             }
         }
         return null;
+    }
+
+    protected function checkRequests($validColumns){
+        $validRequests = array_merge(VALID_REQUESTS, array_keys($validColumns));
+        foreach(array_keys($_GET) as $request){
+            if(!in_array($request, $validRequests)){
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -27,33 +27,18 @@ abstract class Model
         }
     }
 
-    protected function executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query, $columns)
+    protected function executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query)
     {
 
-        if ($filter != null && array_key_exists($filter, $columns)) {
-            $str_query .= "\nWHERE $columns[$filter] LIKE ?";
-        } else if ($filter != null) {
-            return 400;
+        if ($filter != null) {
+            $str_query .= "\nWHERE ".$filter." LIKE ?";
         }
-
-        if (array_key_exists($sort, $columns)) {                     //LEE SI VINO UN CRITERIO DE ORDEN VÁLIDO Y ASEGURA QUE
-            $str_query .= "\nORDER BY $columns[$sort] ";          //QUEDA EN TÉRMINOS DEL ARREGLO ASOCIATIVO DE ARRIBA
-        }                                                       //SI SE ENVIÓ UN VALOR INVÁLIDO, ARROJA 400.
-        else {
-            return 400;
-        }
-
-        if (strtoupper($order) == 'ASC' || strtoupper($order) == 'DESC') {    //LEE SI SE ESPECIFICÓ UN ORDEN. SI SE ENVIÓ
-            $str_query .= strtoupper($order);                              //UN VALOR DE ORDER INVÁLIDO, ARROJA 400.
-        } else {
-            return 400;
-        }
+    
+        $str_query .= "\nORDER BY $sort $order";    
 
         $query = $this->db->prepare($str_query);
 
-        //CHEQUEA QUE EL FILTRO EXISTA. SI EL FILTRO EXISTE, CHEQUEA EL VALOR DE LA VARIABLE "contains", QUE ES PARA DECIDIR
-        //SI EL USUARIO QUIERE FILTRAR POR AQUELLOS ELEMENTOS QUE -CONTENGAN- EL VALOR EN EL ATRIBUTO ESPECIFICADO O, SI NO
-        //ESPECIFICA NADA O ESPECIFICA false BUSCARÁ UNA IGUALDAD EXACTA.
+        //Si el filtro existe, entonces chequea si "contains" es true o false, en cuyo caso pasa al execute un parámetro u otro (con o sin % en los extremos). Si no hay filtro, no pasa ningún parámetro (puesto que la query no tiene ningún signo de interrogación para ser reemplazado por un parámetro). 
 
         if ($filter != null) {
             if ($contains) {

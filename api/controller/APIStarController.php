@@ -18,4 +18,8 @@ class APIStarController extends APIController
         $star = [$data->name, $data->mass, $data->radius, $data->distance, $data->type];
         parent::add($star);
     }
+
+    public function getAll(){
+        parent::getAllData(STARS_COLUMNS);
+    }
 }

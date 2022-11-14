@@ -11,16 +11,8 @@ class ExoplanetModel extends Model
         INNER JOIN methods m ON e.id_method = m.id 
         INNER JOIN stars s ON e.id_star = s.id';
 
-        $columns = array(
-            'name' => 'e.name ',
-            'mass' => 'e.mass ',
-            'radius' => 'e.radius ',
-            'method' => 'm.name_acronym ',
-            'star' => 's.name '
-        );
 
-
-        return parent::executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query, $columns);
+        return parent::executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query);
     }
 
     public function insert($exoplanet)

@@ -22,13 +22,13 @@ Luego hay que usar el token que consiguieron en sus próximas requests que no se
 
 ### GET (todo)
 
-Una request GET `.../api/exoplanets` dará como resultado TODOS los exoplanetas de la tabla ordenadas por nombre de forma descendente. Equivalentemente, una request GET `.../api/stars` dará TODAS las estrellas de la tabla ordenadas de la misma forma.
+Una request GET `.../api/exoplanets` dará como resultado TODOS los exoplanetas de la tabla ordenadas por nombre de forma ascendente. Equivalentemente, una request GET `.../api/stars` dará TODAS las estrellas de la tabla ordenadas de la misma forma.
 
-SORT Y ORDER: para cambiar el parámetro de referencia a partir del cual se ordena, basta con enviar en la request GET un sort=parametro y un `order=asc` o bien `order=desc`. Por ejemplo, `.../api/exoplanets/sort=method&order=desc` dará como resultado todos los exoplanetas ordenados de forma descendiente según la columna "method".
+SORT Y ORDER: para cambiar el parámetro de referencia a partir del cual se ordena, basta con enviar en la request GET un `sort=atributo` y un `order=asc` o bien `order=desc`. Por ejemplo, `.../api/exoplanets/sort=method&order=desc` dará como resultado todos los exoplanetas ordenados de forma descendiente según la columna "method".
 
-PAGINACIÓN: para paginar los resultados hace falta agregar los parámetros `page=n&limit=m`. Por ejemplo, para sacar la página 2 de una paginación de 10 elementos, ordenados por "radius", en orden descendente, se podría hacer la siguiente request: `.../api/exoplanets/sort=radius&order=desc&page=2&limit=10`.
+PAGINACIÓN: para paginar los resultados hace falta agregar los parámetros `page=n&limit=m` con n y m números. Por ejemplo, para sacar la página 2 de una paginación de 10 elementos, ordenados por "radius", en orden descendente, se podría hacer la siguiente request: `.../api/exoplanets/sort=radius&order=desc&page=2&limit=10`.
 
-FILTRO: para filtrar los resultados en base a un atributo, basta con elegir alguno de los cinco atributos de cada tabla y dar un valor para ese atributo. Por ejemplo, `.../api/stars?name=coco` va a devolver todas las estrellas que se llamen coco. Además, se puede especificar un atributo "contains". Por ejemplo, `.../api/exoplanets?name=s&contains=true` va a devolver todas las estrellas que contengan una s en su nombre. "contains" por default es falso, pero se puede especificar `contains=false`. Si se especifica un atributo que no existe o un valor de "contains" que no es true ni false, la API otorgará 404 not found.
+FILTRO: para filtrar los resultados en base a un atributo, basta con elegir alguno de los cinco atributos de cada tabla y dar un valor para ese atributo. Por ejemplo, `.../api/stars?name=coco` va a devolver todas las estrellas que se llamen coco. Además, se puede especificar un atributo "contains". Por ejemplo, `.../api/exoplanets?name=s&contains=true` va a devolver todas las estrellas que contengan una s en su nombre. "contains" por default es falso, pero se puede especificar `contains=false`.
 
 
 Un ejemplo de request que hace uso de TODO, sería el siguiente:
@@ -36,6 +36,8 @@ Un ejemplo de request que hace uso de TODO, sería el siguiente:
 `.../api/exoplanets?sort=radius&order=asc&page=2&limit=6&contains=true&name=a`
 
 que traerá los segundos (page=2) 6 exoplanetas (exoplanets, limit=6), ordenados según su radio (sort=radius) en orden ascendente (order=asc), que contengan (contains=true) la letra a en su nombre (name=a).
+
+ERRORES: Si se eligen valores no válidos para los parámetros, la API arrojará un error 400 (Bad Request). Por ejemplo, si order no es asc o desc (con cualquier combinación de mayúsculas y minúsculas) o si page y/o limit no son númericos, o si se pide filtrar por atributos que no existen, o si se especifican funciones no soportadas.
 
 
 ### GET (un elemento)
@@ -57,9 +59,9 @@ En el caso de ser un exoplaneta, según lo estipulado en el resumen, deberá ten
     "star": "AB Aurigae"
 }``
 
-donde "KLIP" es un método registrado en la lista y "AB Aurigae" también es una estrella de la lista. La lista de métodos puede consultarse en el home de la página web y las estrellas pueden obtenerse con un GET o también en las tablas de la página web. Al ser Foreign Keys, si no son valores preexistentes en las otras tablas la API arrojará error.
+donde "KLIP" es un método registrado en la lista y "AB Aurigae" también es una estrella de la lista. La lista de métodos puede consultarse en el home de la página web (o pidiendo todos los exoplanetas y viendo qué métodos hay disponibles) y las estrellas pueden obtenerse con un GET o también en las tablas de la página web. Al ser Foreign Keys, si no son valores preexistentes en las otras tablas la API arrojará error.
 
-En el caso de ser una estrella, deberá enviarse un JSON como el siguiente:
+En el caso de ser una estrella, deberá enviarse un JSON como el del siguiente ejemplo:
 
 ``{
     "name": "coco estrella",
@@ -75,8 +77,6 @@ Donde no hay restricción para ningún atributo.
 Para hacer una request POST, la URI será `.../api/exoplanet/:ID` o `.../api/star/:ID` y el body debe ser un JSON, de forma equivalente a lo que se sugirió para el método POST. Aquí ":ID" también es el número de ID del objeto de la tabla A SER REEMPLAZADO. 
 
 
-
-
 ### DELETE
 Para hacer una request DELETE, la URI será `.../api/exoplanet/:ID` o `.../api/star/:ID`, al igual que antes.
 
@@ -86,10 +86,10 @@ Para hacer una request DELETE, la URI será `.../api/exoplanet/:ID` o `.../api/s
 
 # Notas extra para el/la profesor/a interesado/a
 
-En esta segunda versión del trabajo, además de cumplir con la consigna, traté de recuperar aquello que hice en la primera entrega. Sé que la consigna no incluía necesariamente reutilizar o rehacer lo anterior, pero dado que el anterior trabajo (https://github.com/CamiloCagliolo/TPE-Web-2) estaba muy mal hecho (me saqué un 4), decidí redimirme e intentar demostrar que sé los contenidos, así que hice un refactoreo de todo el código (fue empezar de casi cero). Si existe la posibilidad de una devolución respecto a eso, genial. Además, me interesó incluir la página porque puede servir para 
+En esta segunda versión del trabajo, además de cumplir con la consigna, traté de recuperar aquello que hice en la primera entrega. Sé que la consigna no incluía necesariamente reutilizar o rehacer lo anterior, pero dado que el anterior trabajo (https://github.com/CamiloCagliolo/TPE-Web-2) estaba muy mal hecho (me saqué un 4), decidí redimirme e intentar demostrar que aprendí los contenidos, así que volví a empezar casi de cero. Si existe la posibilidad de una devolución respecto a eso, sería bueno. Además, me interesó incluir la página porque puede servir para 
 
 1. visualizar los datos de forma cómoda y 
-2. añadir datos de forma sencilla y rápida para manipular los datos de la BD y probar la API REST.
+2. añadir datos de forma sencilla y rápida para manipular la DB y probar la API REST.
 
 USUARIO Y CONTRASEÑA PARA PODER EDITAR DESDE LA PÁGINA: 
 
@@ -108,7 +108,7 @@ La base de datos tiene CUATRO TABLAS: exoplanets, stars, methods y users. Exopla
 
 En total hay CUATRO MVC. Cada una de las tablas es operada por un Model y tiene su propio Controller y View, SALVO el model para la tabla methods que es operado por el NavController. NavController es el controller que se encarga únicamente de la navegación por la página y hace uso de ese model en particular porque lo necesita para renderizar cierto contenido, pero nada más: el contenido de methods no es editable de ninguna forma. MessageHelper es simplemente un ayudante que se invoca en los controllers para manejar las páginas de error (por ejemplo, al querer entrar a páginas restringidas o que no existen) y mensajes HTTP para que JavaScript los renderice en la página.
 
-La página está armada fundamentalmente en SSR, porque encontré más cómodo traer el HTML ya armado desde el servidor, hacer el control de sesión mediante $_SESSION y mostrarlo con un JavaScript sencillo que rehacer todo el código JS para pedir los datos por la API y hacer un sistema de autorización con tokens manejados desde JS.
+La página está armada fundamentalmente en SSR, porque encontré más cómodo traer el HTML ya armado desde el servidor, hacer el control de sesión mediante $_SESSION y mostrarlo con un JavaScript sencillo que rehacer todo el código JS para pedir o enviar los datos por la API y hacer un sistema de autorización con tokens manejados desde JS.
 
 ### Explicación de la estructura de los archivos: 
 
@@ -119,6 +119,6 @@ Controller es una clase padre SÓLO para ExoplanetController y StarController.
 Siempre que fue posible elevar métodos y atributos repetidos o extremadamente similares a clases padres, traté de hacerlo. 
 Las carpetas "data-manipulation" están para separar un poco mejor aquellos modelos y controladores que se dedican exclusivamente a la manipulación de los datos en las tablas.
 
-En la carpeta "api" se encuentran los controller y views para operar las tablas de Exoplanets y Stars. Estos controllers hacen uso de los models en la carpeta src, es decir, los que hice para la página.
+En la carpeta "api" se encuentran los controller y la view para operar las tablas de Exoplanets y Stars mediante la API. Estos controllers hacen uso de los models en la carpeta src, es decir, los que hice para la página.
 
 El método más complejo es el del GET general de la API, porque es el que se encarga de ordenar, filtrar y paginar.

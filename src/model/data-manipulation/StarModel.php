@@ -8,15 +8,7 @@ class StarModel extends Model
     {
         $str_query = 'SELECT * FROM stars';
 
-        $columns = array(
-            'name' => 'name ',
-            'mass' => 'mass ',
-            'radius' => 'radius ',
-            'distance' => 'distance ',
-            'type' => 'type '
-        );
-
-        return parent::executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query, $columns);
+        return parent::executeGetAllQuery($sort, $order, $filter, $filterValue, $contains, $str_query);
     }
 
     public function insert($star)
