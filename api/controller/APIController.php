@@ -94,7 +94,7 @@ class APIController
 
             $data = array_slice($data, $page * $limit, $limit);
         }
-        else if(!is_numeric($page) || !is_numeric($limit) && $limit != null){
+        else if((!is_numeric($page) || !is_numeric($limit)) && $limit != null){
             $this->view->showMessage('Both page and limit have to be numeric values.', 400);
             return;
         }
