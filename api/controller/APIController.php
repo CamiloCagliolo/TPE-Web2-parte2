@@ -89,8 +89,8 @@ class APIController
         }
 
         if (is_numeric($page) && is_numeric($limit)) {
-            $page = intval($_GET['page']) - 1;
-            $limit = intval($_GET['limit']);
+            $page = intval($page) - 1;
+            $limit = intval($limit);
 
             $data = array_slice($data, $page * $limit, $limit);
         }
