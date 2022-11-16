@@ -94,7 +94,7 @@ class APIController
 
             $data = array_slice($data, $page * $limit, $limit);
         }
-        else if((!is_numeric($page) || !is_numeric($limit)) && $limit != null){
+        else if((!is_numeric($page) || !is_numeric($limit)) && ($page != null || $limit != null)){
             $this->view->showMessage('Both page and limit have to be numeric values.', 400);
             return;
         }
@@ -102,7 +102,6 @@ class APIController
             $this->view->showMessage('Specify a limit value for your pagination.', 400);
             return;
         }
-
         if ($data != null) {
             $this->view->showData($data);
         } else {
