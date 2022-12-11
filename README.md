@@ -84,12 +84,7 @@ Para hacer una request DELETE, la URI será `.../api/exoplanet/:ID` o `.../api/s
 
 
 
-# Notas extra para el/la profesor/a interesado/a
-
-En esta segunda versión del trabajo, además de cumplir con la consigna, traté de recuperar aquello que hice en la primera entrega. Sé que la consigna no incluía necesariamente reutilizar o rehacer lo anterior, pero dado que el anterior trabajo (https://github.com/CamiloCagliolo/TPE-Web-2) estaba muy mal hecho (me saqué un 4), decidí redimirme e intentar demostrar que aprendí los contenidos, así que volví a empezar casi de cero. Si existe la posibilidad de una devolución respecto a eso, sería bueno. Además, me interesó incluir la página porque puede servir para 
-
-1. visualizar los datos de forma cómoda y 
-2. añadir datos de forma sencilla y rápida para manipular la DB y probar la API REST.
+# Sobre la página
 
 USUARIO Y CONTRASEÑA PARA PODER EDITAR DESDE LA PÁGINA: 
 
